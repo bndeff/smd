@@ -10,6 +10,7 @@
         android:id="@+id/ledView"
         android:layout_width="400dp"
         android:layout_height="400dp"
+        android:layout_marginTop="120dp"
         android:background="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,11 +25,34 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Loading"
         android:textColor="#ff4040"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ledView" />
+
+    <Button
+        android:id="@+id/prevButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Prev"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Next"
+        app:layout_constraintStart_toEndOf="@+id/prevButton"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/upButton"
@@ -38,7 +62,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="Up"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/nextButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -53,46 +77,64 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/leftButton"
+        android:id="@+id/delButton"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Left"
-        app:layout_constraintStart_toEndOf="@+id/downButton"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/rightButton"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Right"
-        app:layout_constraintStart_toEndOf="@+id/leftButton"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/invertButton"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="Inv"
+        android:text="Del"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prevButton" />
+
+    <Button
+        android:id="@+id/cutButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="Cut"
+        app:layout_constraintStart_toEndOf="@+id/delButton"
+        app:layout_constraintTop_toBottomOf="@+id/nextButton" />
+
+    <Button
+        android:id="@+id/copyButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="Copy"
+        app:layout_constraintStart_toEndOf="@+id/cutButton"
         app:layout_constraintTop_toBottomOf="@+id/upButton" />
 
     <Button
-        android:id="@+id/clearButton"
+        android:id="@+id/pasteButton"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Clr"
-        app:layout_constraintStart_toEndOf="@+id/invertButton"
+        android:text="Paste"
+        app:layout_constraintStart_toEndOf="@+id/copyButton"
         app:layout_constraintTop_toBottomOf="@+id/downButton" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="Add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/delButton" />
+
+    <Button
+        android:id="@+id/cloneButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="Cln"
+        app:layout_constraintStart_toEndOf="@+id/addButton"
+        app:layout_constraintTop_toBottomOf="@+id/cutButton" />
 
     <Button
         android:id="@+id/saveButton"
@@ -101,8 +143,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:text="Save"
-        app:layout_constraintStart_toEndOf="@+id/clearButton"
-        app:layout_constraintTop_toBottomOf="@+id/leftButton" />
+        app:layout_constraintStart_toEndOf="@+id/cloneButton"
+        app:layout_constraintTop_toBottomOf="@+id/copyButton" />
 
     <Button
         android:id="@+id/loadButton"
@@ -112,48 +154,46 @@
         android:layout_marginLeft="8dp"
         android:text="Load"
         app:layout_constraintStart_toEndOf="@+id/saveButton"
-        app:layout_constraintTop_toBottomOf="@+id/rightButton" />
+        app:layout_constraintTop_toBottomOf="@+id/pasteButton" />
 
     <Button
-        android:id="@+id/undoButton"
+        android:id="@+id/cycleButton"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:enabled="false"
-        android:text="Undo"
+        android:text="Cycle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/invertButton" />
+        app:layout_constraintTop_toBottomOf="@+id/addButton" />
 
     <Button
-        android:id="@+id/redoButton"
+        android:id="@+id/incButton"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:enabled="false"
-        android:text="Redo"
-        app:layout_constraintStart_toEndOf="@+id/undoButton"
-        app:layout_constraintTop_toBottomOf="@+id/clearButton" />
+        android:text="Inc"
+        app:layout_constraintStart_toEndOf="@+id/cycleButton"
+        app:layout_constraintTop_toBottomOf="@+id/cloneButton" />
 
     <Button
-        android:id="@+id/lockButton"
+        android:id="@+id/decButton"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Lock"
-        app:layout_constraintStart_toEndOf="@+id/redoButton"
+        android:text="Dec"
+        app:layout_constraintStart_toEndOf="@+id/incButton"
         app:layout_constraintTop_toBottomOf="@+id/saveButton" />
 
     <Button
-        android:id="@+id/tintButton"
+        android:id="@+id/stepButton"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Tint"
-        app:layout_constraintStart_toEndOf="@+id/lockButton"
+        android:text="Step"
+        app:layout_constraintStart_toEndOf="@+id/decButton"
         app:layout_constraintTop_toBottomOf="@+id/loadButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
