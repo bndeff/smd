@@ -6,102 +6,110 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
-    private StateMachine sm;
+    private ProjectList pl;
     private String savedProgram;
-    private int txIndex;
+    private String savedFullRepr;
+    private int counter = 0;
+
+    private String genProjectName() {
+        counter += 1;
+        return String.format(Locale.US, "p;r\\;%d", counter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sm = new StateMachine();
-        savedProgram = sm.getProgramString();
+        pl = new ProjectList();
+        pl.addProject(genProjectName());
+        savedProgram = pl.getMachine().getProgram();
+        savedFullRepr = pl.exportAll();
         updateDisplay();
 
         LedGridView v = findViewById(R.id.ledView);
         v.setOnChangeListener(() -> {
             String hp = v.getHexPattern();
+            StateMachine sm = pl.getMachine();
             sm.setPattern(hp);
             if(!sm.getPattern().equals(hp)) updateDisplay();
         });
 
         findViewById(R.id.prevButton).setOnClickListener(__ -> {
+            StateMachine sm = pl.getMachine();
             sm.gotoPrevState(true);
             updateDisplay();
         });
         findViewById(R.id.nextButton).setOnClickListener(__ -> {
+            StateMachine sm = pl.getMachine();
             sm.gotoNextState(true);
             updateDisplay();
         });
-        findViewById(R.id.upButton).setOnClickListener(__ -> {
-            sm.moveStateUp();
-            updateDisplay();
-        });
-        findViewById(R.id.downButton).setOnClickListener(__ -> {
-            sm.moveStateDown();
+        findViewById(R.id.addButton).setOnClickListener(__ -> {
+            StateMachine sm = pl.getMachine();
+            sm.addState();
             updateDisplay();
         });
         findViewById(R.id.delButton).setOnClickListener(__ -> {
+            StateMachine sm = pl.getMachine();
             sm.removeState();
             updateDisplay();
         });
-        findViewById(R.id.cutButton).setOnClickListener(__ -> {
-            sm.cutState();
-            updateDisplay();
-        });
         findViewById(R.id.copyButton).setOnClickListener(__ -> {
+            StateMachine sm = pl.getMachine();
             sm.copyState();
             updateDisplay();
         });
         findViewById(R.id.pasteButton).setOnClickListener(__ -> {
+            StateMachine sm = pl.getMachine();
             sm.pasteState();
             updateDisplay();
         });
-        findViewById(R.id.addButton).setOnClickListener(__ -> {
-            sm.addState();
-            updateDisplay();
-        });
-        findViewById(R.id.cloneButton).setOnClickListener(__ -> {
-            sm.cloneState();
-            updateDisplay();
-        });
         findViewById(R.id.saveButton).setOnClickListener(__ -> {
-            savedProgram = sm.getProgramString();
+            StateMachine sm = pl.getMachine();
+            savedProgram = sm.getProgram();
             updateDisplay();
         });
         findViewById(R.id.loadButton).setOnClickListener(__ -> {
-            sm = new StateMachine(savedProgram);
+            StateMachine sm = pl.getMachine();
+            sm.loadProgram(savedProgram);
             updateDisplay();
         });
-        findViewById(R.id.cycleButton).setOnClickListener(__ -> {
-            txIndex = (txIndex + 1) % 7;
+        findViewById(R.id.prevProjButton).setOnClickListener(__ -> {
+            pl.selectProject(pl.getSelIndex() - 1);
             updateDisplay();
         });
-        findViewById(R.id.incButton).setOnClickListener(__ -> {
-            if(txIndex == 6) {
-                sm.setSpeed((sm.getSpeed() + 1) % 4);
-            } else {
-                int rt = sm.getRawTransfer(txIndex) + 1;
-                if(rt >= sm.getStateCount()) rt = -StateMachine.NUM_OP;
-                sm.setRawTransfer(txIndex, rt);
-            }
+        findViewById(R.id.nextProjButton).setOnClickListener(__ -> {
+            pl.selectProject(pl.getSelIndex() + 1);
             updateDisplay();
         });
-        findViewById(R.id.decButton).setOnClickListener(__ -> {
-            if(txIndex == 6) {
-                sm.setSpeed((sm.getSpeed() - 1 + 4) % 4);
-            } else {
-                int rt = sm.getRawTransfer(txIndex) - 1;
-                if(rt < -StateMachine.NUM_OP) rt = sm.getStateCount() - 1;
-                sm.setRawTransfer(txIndex, rt);
-            }
+        findViewById(R.id.addProjButton).setOnClickListener(__ -> {
+            pl.addProject(genProjectName());
             updateDisplay();
         });
-        findViewById(R.id.stepButton).setOnClickListener(__ -> {
-            if(txIndex != 6) sm.processOp(sm.getTransfer(txIndex));
+        findViewById(R.id.delProjButton).setOnClickListener(__ -> {
+            pl.deleteProject();
+            if(pl.getProjectCount() == 0) pl.addProject(genProjectName());
+            updateDisplay();
+        });
+        findViewById(R.id.cloneProjButton).setOnClickListener(__ -> {
+            pl.cloneProject(genProjectName());
+            updateDisplay();
+        });
+        findViewById(R.id.importProjButton).setOnClickListener(__ -> {
+            pl.importProject(genProjectName(), savedProgram);
+            updateDisplay();
+        });
+        findViewById(R.id.saveProjButton).setOnClickListener(__ -> {
+            savedFullRepr = pl.exportAll();
+            updateDisplay();
+        });
+        findViewById(R.id.loadProjButton).setOnClickListener(__ -> {
+            pl.importAll(savedFullRepr, true);
             updateDisplay();
         });
     }
@@ -110,14 +118,17 @@ public class MainActivity extends AppCompatActivity {
         LedGridView v = findViewById(R.id.ledView);
         TextView t = findViewById(R.id.textView);
 
+        StateMachine sm = pl.getMachine();
         v.setHexPattern(sm.getPattern(), true);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("[");
+        sb.append(sm.getName());
+        sb.append(" [");
         sb.append(sm.getCurrentState());
         sb.append("/");
         sb.append(sm.getStateCount());
         sb.append("]    ");
+        int txIndex = 0;
         for(int i=0; i<6; ++i) {
             if(txIndex == i) sb.append("*");
             sb.append(sm.getRawTransfer(i));
@@ -133,12 +144,10 @@ public class MainActivity extends AppCompatActivity {
         t.setText(sb.toString());
 
 
-        Log.d("prog", sm.getProgramString());
+        Log.d("prog", sm.getProgram());
 
-        findViewById(R.id.upButton).setEnabled(!sm.isFirstState());
-        findViewById(R.id.downButton).setEnabled(!sm.isLastState());
         findViewById(R.id.pasteButton).setEnabled(sm.isClipboardValid());
-        findViewById(R.id.stepButton).setEnabled(txIndex != 6);
+
     }
 
 }

@@ -2,6 +2,8 @@ package app.smd;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class StateMachine {
 
@@ -113,6 +115,8 @@ public class StateMachine {
     private int currentState;
     private int playbackSpeed;
     private boolean playbackPaused;
+    private String name;
+    private OnChangeListener onChangeListener;
 
     private static final int stateCap = 75;
     private static final String magic = "73743031";
@@ -140,22 +144,32 @@ public class StateMachine {
     public StateMachine() {
         states = new ArrayList<>();
         defaultTransfer = new int[NUM_TX];
+        onChangeListener = null;
         resetParams(false);
     }
 
-    public StateMachine(StateMachine sm) {
+    public StateMachine(StateMachine sm, boolean keepState) {
         states = new ArrayList<>();
         for(State s : sm.states) {
             states.add(new State(s));
         }
         defaultTransfer = sm.defaultTransfer.clone();
         globalSpeed = sm.globalSpeed;
-        clipboard = null;
-        resetPlayback();
+        if(keepState) {
+            clipboard = sm.clipboard;
+            currentState = sm.currentState;
+            playbackSpeed = sm.playbackSpeed;
+            playbackPaused = sm.playbackPaused;
+            name = sm.name;
+        } else {
+            clipboard = null;
+            name = "";
+            resetPlayback();
+        }
+        onChangeListener = null;
     }
 
-    public StateMachine(ProgramData pd) {
-        this();
+    private void loadProgramDataInternal(ProgramData pd) {
         if(!pd.valid) { resetParams(true); return; }
         int n = pd.numStates;
         if(n < 1 || n > stateCap) { resetParams(true); return; }
@@ -176,13 +190,44 @@ public class StateMachine {
         states.clear();
         for(int i=0; i<n; ++i) {
             State s = new State(pd.transferData.substring(11 * i, 11 * (i+1)),
-                                pd.patternData.substring(16 * i, 16 * (i+1)));
+                    pd.patternData.substring(16 * i, 16 * (i+1)));
             states.add(s);
         }
     }
 
-    public StateMachine(String program) {
-        this(new ProgramData(program));
+    public StateMachine(ProgramData pd) {
+        this();
+        loadProgramDataInternal(pd);
+    }
+
+    private void loadProgramInternal(String program) {
+        loadProgramDataInternal(new ProgramData(program));
+    }
+
+    private void loadRepresentationInternal(String repr) {
+        Scanner s = new Scanner(repr);
+        s.useDelimiter(",");
+        loadProgramInternal(s.next());
+        String clipboardTransferData = s.next();
+        String clipboardPattern = s.next();
+        if(!clipboardTransferData.isEmpty()) {
+            clipboard = new State(clipboardTransferData, clipboardPattern);
+        }
+        currentState = s.nextInt();
+        playbackSpeed = s.nextInt();
+        playbackPaused = s.nextInt() != 0;
+        s.skip(",");
+        s.useDelimiter("\\A");  // read the rest of repr
+        name = s.next();
+    }
+
+    public StateMachine(String programOrRepr) {
+        this();
+        if(programOrRepr.contains(",")) {
+            loadRepresentationInternal(programOrRepr);
+        } else {
+            loadProgramInternal(programOrRepr);
+        }
     }
 
     private ProgramData getProgramData() {
@@ -205,8 +250,45 @@ public class StateMachine {
         return new ProgramData(n, header, transferData.toString(), patternData.toString());
     }
 
-    public String getProgramString() {
+    public String getProgram() {
         return getProgramData().toProgramString();
+    }
+
+    public String getRepresentation() {
+        String clipboardTransferData = "";
+        String clipboardPattern = "";
+        if(clipboard != null) {
+            clipboardTransferData = clipboard.getTransferData();
+            clipboardPattern = clipboard.pattern;
+        }
+        return String.format(Locale.US,"%s,%s,%s,%d,%d,%d,%s",
+                getProgram(),
+                clipboardTransferData,
+                clipboardPattern,
+                currentState,
+                playbackSpeed,
+                playbackPaused ? 1 : 0,
+                name);
+    }
+
+    public void setOnChangeListener(OnChangeListener listener) {
+        onChangeListener = listener;
+    }
+
+    private void fireOnChange() {
+        if(onChangeListener != null) onChangeListener.onChange();
+    }
+
+    public void loadProgram(String program) {
+        resetParams(false);
+        loadProgramInternal(program);
+        fireOnChange();
+    }
+
+    public void loadRepresentation(String repr) {
+        resetParams(false);
+        loadRepresentationInternal(repr);
+        fireOnChange();
     }
 
     private void resetParams(boolean error) {
@@ -220,6 +302,7 @@ public class StateMachine {
         defaultTransfer[TX_AUTO] = OP_NEXT;
         globalSpeed = 5;
         clipboard = null;
+        name = "";
         resetPlayback();
         if(error) currentState = -1;
     }
@@ -234,6 +317,7 @@ public class StateMachine {
         } else {
             currentState = state;
         }
+        fireOnChange();
     }
 
     public int getCurrentState() {
@@ -244,9 +328,22 @@ public class StateMachine {
         return states.size();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String newName) {
+        name = newName;
+        fireOnChange();
+    }
+
     public String getPattern() {
         if(isErrorState()) return "81bda1bda1a13c81";
         return states.get(currentState).pattern;
+    }
+
+    public String getThumbnail() {
+        return states.get(0).pattern;
     }
 
     public int getRawTransfer(int tx) {
@@ -299,12 +396,14 @@ public class StateMachine {
         currentState = 0;
         playbackSpeed = globalSpeed;
         playbackPaused = false;
+        fireOnChange();
     }
 
     public void processOp(int op) {
         if(isErrorState()) return;
         if(op >= 0 && op < states.size()) {
             currentState = op;
+            fireOnChange();
             return;
         }
         switch (op) {
@@ -316,15 +415,23 @@ public class StateMachine {
                 break;
             case OP_PAUSE:
                 playbackPaused = !playbackPaused;
+                fireOnChange();
                 break;
             case OP_FASTER:
-                if(playbackSpeed > 0) --playbackSpeed;
+                if(playbackSpeed > 0) {
+                    --playbackSpeed;
+                    fireOnChange();
+                }
                 break;
             case OP_SLOWER:
-                if(playbackSpeed < timerList.length-1) ++playbackSpeed;
+                if(playbackSpeed < timerList.length-1) {
+                    ++playbackSpeed;
+                    fireOnChange();
+                }
                 break;
             default:
                 currentState = -1;  // error
+                fireOnChange();
         }
     }
 
@@ -339,19 +446,23 @@ public class StateMachine {
     public void gotoNextState(boolean rollOver) {
         if(isErrorState()) return;
         if(isLastState()) {
-            if(rollOver) currentState = 0;
+            if(!rollOver) return;
+            currentState = 0;
         } else {
             currentState = currentState + 1;
         }
+        fireOnChange();
     }
 
     public void gotoPrevState(boolean rollOver){
         if(isErrorState()) return;
         if(isFirstState()) {
-            if(rollOver) currentState = states.size() -1;
+            if(!rollOver) return;
+            currentState = states.size() -1;
         } else {
             currentState = currentState - 1;
         }
+        fireOnChange();
     }
 
     private void shiftStateTransfers(State s, int threshold, int shift) {
@@ -398,37 +509,44 @@ public class StateMachine {
 
     public void addState() {
         addStateInternal(new State());
+        fireOnChange();
     }
 
     public void cloneState() {
         addStateInternal(new State(states.get(currentState)));
+        fireOnChange();
     }
 
     public void removeState() {
         if(isErrorState()) return;
         if(states.size() == 1) {
             states.set(0, new State());
+            fireOnChange();
             return;
         }
         states.remove(currentState);
         shiftTransfers(currentState, -1);
         if(currentState == states.size()) --currentState;
+        fireOnChange();
     }
 
     public void copyState() {
         if(isErrorState()) return;
         clipboard = new State(states.get(currentState));
+        fireOnChange();
     }
 
     public void cutState() {
         if(isErrorState()) return;
         copyState();
         removeState();
+        fireOnChange();
     }
 
     public void pasteState() {
         if(isErrorState()) return;
         addStateInternal(new State(clipboard));
+        fireOnChange();
     }
 
     public boolean isClipboardValid() {
@@ -437,6 +555,7 @@ public class StateMachine {
 
     public void clearClipboard() {
         clipboard = null;
+        fireOnChange();
     }
 
     private void swapStates(int index) {
@@ -451,39 +570,46 @@ public class StateMachine {
         if(isErrorState() || isFirstState()) return;
         currentState -= 1;
         swapStates(currentState);
+        fireOnChange();
     }
 
     public void moveStateDown() {
         if(isErrorState() || isLastState()) return;
         swapStates(currentState);
         currentState += 1;
+        fireOnChange();
     }
 
     public void setPattern(String value) {
         if(isErrorState()) return;
         states.get(currentState).pattern = value;
+        fireOnChange();
     }
 
     public void setRawTransfer(int tx, int value) {
         if(isErrorState()) return;
         if(tx < 0 || tx >= NUM_TX) return;
         states.get(currentState).transfer[tx] = value;
+        fireOnChange();
     }
 
     public void setDefaultTransfer(int tx, int value) {
         if(tx < 0 || tx >= NUM_TX) return;
         defaultTransfer[tx] = value;
+        fireOnChange();
     }
 
     public void setSpeed(int value) {
         if(isErrorState()) return;
         if(value < 0 || value >= timerMultipliers.length) return;
         states.get(currentState).speed = value;
+        fireOnChange();
     }
 
     public void setGlobalSpeed(int value) {
         if(value < 0 || value >= timerList.length) return;
         globalSpeed = playbackSpeed = value;
+        fireOnChange();
     }
 
 }

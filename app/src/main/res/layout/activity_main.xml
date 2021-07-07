@@ -55,25 +55,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/upButton"
+        android:id="@+id/addButton"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:text="Up"
+        android:text="Add"
         app:layout_constraintStart_toEndOf="@+id/nextButton"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/downButton"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Down"
-        app:layout_constraintStart_toEndOf="@+id/upButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -82,19 +71,10 @@
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:text="Del"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prevButton" />
-
-    <Button
-        android:id="@+id/cutButton"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="Cut"
-        app:layout_constraintStart_toEndOf="@+id/delButton"
-        app:layout_constraintTop_toBottomOf="@+id/nextButton" />
+        app:layout_constraintStart_toEndOf="@+id/addButton"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/copyButton"
@@ -103,8 +83,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:text="Copy"
-        app:layout_constraintStart_toEndOf="@+id/cutButton"
-        app:layout_constraintTop_toBottomOf="@+id/upButton" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prevButton" />
 
     <Button
         android:id="@+id/pasteButton"
@@ -114,27 +94,7 @@
         android:layout_marginLeft="8dp"
         android:text="Paste"
         app:layout_constraintStart_toEndOf="@+id/copyButton"
-        app:layout_constraintTop_toBottomOf="@+id/downButton" />
-
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="Add"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/delButton" />
-
-    <Button
-        android:id="@+id/cloneButton"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="Cln"
-        app:layout_constraintStart_toEndOf="@+id/addButton"
-        app:layout_constraintTop_toBottomOf="@+id/cutButton" />
+        app:layout_constraintTop_toBottomOf="@+id/nextButton" />
 
     <Button
         android:id="@+id/saveButton"
@@ -143,8 +103,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:text="Save"
-        app:layout_constraintStart_toEndOf="@+id/cloneButton"
-        app:layout_constraintTop_toBottomOf="@+id/copyButton" />
+        app:layout_constraintStart_toEndOf="@+id/pasteButton"
+        app:layout_constraintTop_toBottomOf="@+id/addButton" />
 
     <Button
         android:id="@+id/loadButton"
@@ -154,46 +114,86 @@
         android:layout_marginLeft="8dp"
         android:text="Load"
         app:layout_constraintStart_toEndOf="@+id/saveButton"
+        app:layout_constraintTop_toBottomOf="@+id/delButton" />
+
+    <Button
+        android:id="@+id/prevProjButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="PreP"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/copyButton" />
+
+    <Button
+        android:id="@+id/nextProjButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="NexP"
+        app:layout_constraintStart_toEndOf="@+id/prevProjButton"
         app:layout_constraintTop_toBottomOf="@+id/pasteButton" />
 
     <Button
-        android:id="@+id/cycleButton"
+        android:id="@+id/addProjButton"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Cycle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addButton" />
-
-    <Button
-        android:id="@+id/incButton"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="Inc"
-        app:layout_constraintStart_toEndOf="@+id/cycleButton"
-        app:layout_constraintTop_toBottomOf="@+id/cloneButton" />
-
-    <Button
-        android:id="@+id/decButton"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="Dec"
-        app:layout_constraintStart_toEndOf="@+id/incButton"
+        android:text="AddP"
+        app:layout_constraintStart_toEndOf="@+id/nextProjButton"
         app:layout_constraintTop_toBottomOf="@+id/saveButton" />
 
     <Button
-        android:id="@+id/stepButton"
+        android:id="@+id/delProjButton"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Step"
-        app:layout_constraintStart_toEndOf="@+id/decButton"
+        android:text="DelP"
+        app:layout_constraintStart_toEndOf="@+id/addProjButton"
         app:layout_constraintTop_toBottomOf="@+id/loadButton" />
+
+    <Button
+        android:id="@+id/cloneProjButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="ClnP"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prevProjButton" />
+
+    <Button
+        android:id="@+id/importProjButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="ImpP"
+        app:layout_constraintStart_toEndOf="@+id/cloneProjButton"
+        app:layout_constraintTop_toBottomOf="@+id/nextProjButton" />
+
+    <Button
+        android:id="@+id/saveProjButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="SavP"
+        app:layout_constraintStart_toEndOf="@+id/importProjButton"
+        app:layout_constraintTop_toBottomOf="@+id/addProjButton" />
+
+    <Button
+        android:id="@+id/loadProjButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="LoaP"
+        app:layout_constraintStart_toEndOf="@+id/saveProjButton"
+        app:layout_constraintTop_toBottomOf="@+id/delProjButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
