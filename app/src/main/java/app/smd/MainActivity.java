@@ -7,17 +7,17 @@ import android.util.Log;
 import android.widget.TextView;
 
 import java.util.Locale;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ProjectList pl;
+    private PersistedProjectList pl;
     private String savedProgram;
     private String savedFullRepr;
-    private int counter = 0;
+    Random rand = new Random();
 
     private String genProjectName() {
-        counter += 1;
-        return String.format(Locale.US, "p;r\\;%d", counter);
+        return String.format(Locale.US, "pr%03d", rand.nextInt(1000));
     }
 
     @Override
@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        pl = new ProjectList();
-        pl.addProject(genProjectName());
+        pl = new PersistedProjectList(this);
+
         savedProgram = pl.getMachine().getProgram();
         savedFullRepr = pl.exportAll();
         updateDisplay();
@@ -109,9 +109,16 @@ public class MainActivity extends AppCompatActivity {
             updateDisplay();
         });
         findViewById(R.id.loadProjButton).setOnClickListener(__ -> {
-            pl.importAll(savedFullRepr, true);
+            pl.clear();
+            pl.importAll(savedFullRepr);
             updateDisplay();
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pl.persistState();
     }
 
     void updateDisplay() {

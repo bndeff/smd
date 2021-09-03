@@ -116,11 +116,13 @@ public class ProjectList {
         return sb.toString();
     }
 
-    public void importAll(String fullRepr, boolean clear) {
-        if(clear) {
-            projects.clear();
-            selIndex = -1;
-        }
+    public void clear() {
+        projects.clear();
+        selIndex = -1;
+        fireOnChange();
+    }
+
+    public void importAll(String fullRepr) {
         for(String escapedRepr : fullRepr.split("(?<!\\\\);")) {
             // split by ; but not by \;
             selIndex += 1;
