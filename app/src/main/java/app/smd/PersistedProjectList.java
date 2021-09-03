@@ -48,6 +48,10 @@ public class PersistedProjectList {
         if(onChangeListener != null) onChangeListener.onChange();
     }
 
+    public ProjectList getWrappedProjectList() {
+        return pl;
+    }
+
     public int getProjectCount() {
         return pl.getProjectCount();
     }

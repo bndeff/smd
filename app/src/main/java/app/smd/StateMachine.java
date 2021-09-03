@@ -342,8 +342,12 @@ public class StateMachine {
         return states.get(currentState).pattern;
     }
 
-    public String getThumbnail() {
-        return states.get(0).pattern;
+    public String getThumbnail(int index) {
+        if(index < 0 || index >= states.size()) {
+            return "0000000000000000";
+        } else {
+            return states.get(index).pattern;
+        }
     }
 
     public int getRawTransfer(int tx) {

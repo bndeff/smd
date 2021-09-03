@@ -269,7 +269,7 @@ public class LedGridView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int a, k, p, c; float x, y; Boolean m;
-        if(!editable) return true;
+        if(!editable) return false;
         a = event.getActionMasked();
         switch(a) {
             case ACTION_DOWN:

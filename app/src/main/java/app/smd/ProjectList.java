@@ -7,7 +7,7 @@ public class ProjectList {
     private static class Project {
         StateMachine stateMachine;
         String repr;
-        String thumb;
+        String preview;
         String name;
     }
 
@@ -29,15 +29,20 @@ public class ProjectList {
         if(onChangeListener != null) onChangeListener.onChange();
     }
 
+    private String extractPreview(StateMachine sm) {
+        return sm.getThumbnail(0) + sm.getThumbnail(1) +
+                sm.getThumbnail(2) + sm.getName();
+    }
+
     private Project createProject(StateMachine sm) {
         Project p = new Project();
         p.stateMachine = sm;
         p.repr = sm.getRepresentation();
-        p.thumb = sm.getThumbnail();
+        p.preview = extractPreview(sm);
         p.name = sm.getName();
         sm.setOnChangeListener(() -> {
             p.repr = p.stateMachine.getRepresentation();
-            p.thumb = p.stateMachine.getThumbnail();
+            p.preview = extractPreview(p.stateMachine);
             p.name = p.stateMachine.getName();
             fireOnChange();
         });
@@ -61,6 +66,11 @@ public class ProjectList {
     public StateMachine getMachine() {
         if(selIndex < 0) return null;
         return projects.get(selIndex).stateMachine;
+    }
+
+    public String getPreview(int index) {
+        if(index < 0 || index >= projects.size()) return null;
+        return projects.get(index).preview;
     }
 
     public void addProject(String name) {
