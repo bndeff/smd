@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
-    android:padding="5dp">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/thumbnail_padding">
 
     <app.smd.LedGridView
         android:id="@+id/ledPreview1"
-        android:layout_width="85dp"
-        android:layout_height="80dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_width="@dimen/thumbnail_size"
+        android:layout_height="@dimen/thumbnail_size"
+        android:layout_marginRight="@dimen/thumbnail_padding"
+        android:layout_marginEnd="@dimen/thumbnail_padding"
         android:background="#000000"
         app:offColor="#404040"
         app:onColor="#ff4040"
@@ -18,10 +18,10 @@
 
     <app.smd.LedGridView
         android:id="@+id/ledPreview2"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_width="@dimen/thumbnail_size"
+        android:layout_height="@dimen/thumbnail_size"
+        android:layout_marginRight="@dimen/thumbnail_padding"
+        android:layout_marginEnd="@dimen/thumbnail_padding"
         android:background="#000000"
         app:offColor="#404040"
         app:onColor="#ff4040"
@@ -29,10 +29,10 @@
 
     <app.smd.LedGridView
         android:id="@+id/ledPreview3"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_width="@dimen/thumbnail_size"
+        android:layout_height="@dimen/thumbnail_size"
+        android:layout_marginRight="@dimen/thumbnail_padding"
+        android:layout_marginEnd="@dimen/thumbnail_padding"
         android:background="#000000"
         app:offColor="#404040"
         app:onColor="#ff4040"

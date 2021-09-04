@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/thumbnail_padding">
+
+    <app.smd.LedGridView
+        android:id="@+id/ledPreview"
+        android:layout_width="@dimen/thumbnail_size"
+        android:layout_height="@dimen/thumbnail_size"
+        android:background="#000000"
+        app:offColor="#404040"
+        app:onColor="#ff4040"
+        app:margin="2dp" />
+
+</LinearLayout>
