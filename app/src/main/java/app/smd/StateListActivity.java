@@ -2,6 +2,7 @@ package app.smd;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,11 +12,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class StateListActivity extends AppCompatActivity {
 
     private PersistedProjectList pl;
     private StateMachine sm;
+    private RecyclerView rv;
+    private StateListAdapter sla;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +31,11 @@ public class StateListActivity extends AppCompatActivity {
 
         int tileWidth = (int) Math.ceil(getResources().getDimension(R.dimen.thumbnail_size) +
                 2 * getResources().getDimension(R.dimen.thumbnail_padding));
-        RecyclerView rv = (RecyclerView) findViewById(R.id.listStates);
+        rv = (RecyclerView) findViewById(R.id.listStates);
         RecyclerView.LayoutManager lm = new TiledLayoutManager(this, tileWidth);
         rv.setLayoutManager(lm);
 
-        StateListAdapter sla = new StateListAdapter(sm);
+        sla = new StateListAdapter(sm);
         rv.setAdapter(sla);
     }
 
@@ -42,14 +46,86 @@ public class StateListActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        pl.loadState();
+        sm = pl.getWrappedProjectList().getMachine();
+        sla = new StateListAdapter(sm);
+        rv.setAdapter(sla);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_state_list, menu);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tbFrameActions);
+        Menu toolbarMenu = toolbar.getMenu();
+        inflater.inflate(R.menu.toolbar_state_list, toolbarMenu);
+        int menuSize = toolbarMenu.size();
+        for(int i = 0; i < menuSize; ++i) {
+            toolbarMenu.getItem(i).setOnMenuItemClickListener(this::onOptionsItemSelected);
+        }
         return true;
+    }
+
+    private void applyChanges() {
+        pl.persistState();
+        sla.notifyDataSetChanged();
+    }
+
+    private void unimplemented() {
+        Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.miPlayFrame) {
+            unimplemented();
+        }
+        else if(id == R.id.miDebugFrame) {
+            unimplemented();
+        }
+        else if(id == R.id.miProjectSettings) {
+            unimplemented();
+        }
+        else if(id == R.id.miEditFrame) {
+            Intent intent = new Intent(this, PatternActivity.class);
+            this.startActivity(intent);
+        }
+        else if(id == R.id.miAddFrame) {
+            sm.addState();
+            applyChanges();
+        }
+        else if(id == R.id.miCloneFrame) {
+            sm.cloneState();
+            applyChanges();
+        }
+        else if(id == R.id.miMoveFrameForward) {
+            sm.moveStateUp();
+            applyChanges();
+        }
+        else if(id == R.id.miMoveFrameBackward) {
+            sm.moveStateDown();
+            applyChanges();
+        }
+        else if(id == R.id.miCutFrame) {
+            sm.cutState();
+            applyChanges();
+        }
+        else if(id == R.id.miCopyFrame) {
+            sm.copyState();
+            applyChanges();
+        }
+        else if(id == R.id.miPasteFrame) {
+            sm.pasteState();
+            applyChanges();
+        }
+        else if(id == R.id.miDeleteFrame) {
+            sm.removeState();
+            applyChanges();
+        }
         return true;
     }
 }

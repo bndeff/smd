@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/miEditFrame"
+        android:icon="@drawable/ic_edit"
+        android:title="Edit"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miAddFrame"
+        android:icon="@drawable/ic_add"
+        android:title="Add"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miCloneFrame"
+        android:icon="@drawable/ic_clone"
+        android:title="Clone"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miMoveFrameForward"
+        android:icon="@drawable/ic_move_left"
+        android:title="Move forward"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miMoveFrameBackward"
+        android:icon="@drawable/ic_move_right"
+        android:title="Move backward"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miCutFrame"
+        android:icon="@drawable/ic_cut"
+        android:title="Cut"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miCopyFrame"
+        android:icon="@drawable/ic_copy"
+        android:title="Copy"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miPasteFrame"
+        android:icon="@drawable/ic_paste"
+        android:title="Paste"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miDeleteFrame"
+        android:icon="@drawable/ic_delete"
+        android:title="Delete"
+        app:showAsAction="ifRoom" />
+</menu>

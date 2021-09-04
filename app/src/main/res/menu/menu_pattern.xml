@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/miUndoPattern"
+        android:icon="@drawable/ic_undo"
+        android:title="Undo"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miRedoPattern"
+        android:icon="@drawable/ic_redo"
+        android:title="Redo"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miLockTransfers"
+        android:icon="@drawable/ic_locked"
+        android:title="Unlock transfers"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -28,7 +28,7 @@ public class PersistedProjectList {
         spe.apply();
     }
 
-    private void loadState() {
+    public void loadState() {
         String fullRepr = sp.getString("projects", "");
         int selIndex = sp.getInt("selection", 0);
         pl.clear();
