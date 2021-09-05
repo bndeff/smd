@@ -75,6 +75,7 @@ public class ProjectListActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.miPlayProject) {
             Intent intent = new Intent(this, SimulationActivity.class);
+            intent.putExtra("mode", 0);
             this.startActivity(intent);
         }
         else if(id == R.id.miEditProject) {

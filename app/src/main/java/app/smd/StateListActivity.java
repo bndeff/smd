@@ -83,10 +83,12 @@ public class StateListActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.miPlayFrame) {
             Intent intent = new Intent(this, SimulationActivity.class);
+            intent.putExtra("mode", 1);
             this.startActivity(intent);
         }
         else if(id == R.id.miDebugFrame) {
             Intent intent = new Intent(this, SimulationActivity.class);
+            intent.putExtra("mode", 2);
             this.startActivity(intent);
         }
         else if(id == R.id.miProjectSettings) {

@@ -4,8 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Choreographer;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,12 @@ public class SimulationActivity extends AppCompatActivity {
     private int initState;
     private boolean debugMode = false;
     private int viewMode = 0;
+    private int delay = 0;
+    private long lastTimer = 0;
+    private long frameProgress = 0;
+    private Choreographer cg;
+    private int holdRefresh = 0;
+    private boolean pendingRefresh = false;
     private LedGridView ledPattern;
     private final List<Button> btnTransfer = new ArrayList<>();
     private final List<TextView> txtTransfer = new ArrayList<>();
@@ -83,7 +89,7 @@ public class SimulationActivity extends AppCompatActivity {
 
     private boolean isPosAvailable(int pos) {
         if(debugMode) return true;
-        return pos != 0 && pos != 6 && pos != 8;
+        return pos != 0 && pos != 2 && pos != 6 && pos != 8;
     }
 
     private int resFromPos(int pos) {
@@ -195,15 +201,68 @@ public class SimulationActivity extends AppCompatActivity {
             }
             tlControls.addView(tr);
         }
-        debugMode = true;
-        viewMode = 0;
 
-        sm = new StateMachine((new PersistedProjectList(this)).getMachine(), true);
+        int mode = getIntent().getIntExtra("mode", 0);
+        viewMode = 0;
+        debugMode = mode == 2;
+
+        sm = new StateMachine((new PersistedProjectList(this)).getMachine(), mode != 0);
         initState = sm.getCurrentState();
-        refreshDisplay();
+        refresh();
+
+        sm.setOnChangeListener(this::stateMachineChanged);
+        cg = Choreographer.getInstance();
+        cg.postFrameCallback(this::frameCallback);
     }
 
-    private void refreshDisplay() {
+    private void frameCallback(long frameTimeNanos) {
+        if(delay != 0) {
+            if(lastTimer != 0) {
+                frameProgress += (frameTimeNanos - lastTimer) / delay;
+                if (frameProgress > 1000000) {
+                    int adv = (int) (frameProgress / 1000000);
+                    frameProgress %= 1000000;
+                    advanceFrames(adv);
+                }
+            }
+            lastTimer = frameTimeNanos;
+        } else {
+            lastTimer = 0;
+        }
+        cg.postFrameCallback(this::frameCallback);
+    }
+
+    private void advanceFrames(int frames) {
+        lockRefresh();
+        for(int i=0; i<frames; ++i) {
+            sm.processOp(sm.getTransfer(StateMachine.TX_AUTO));
+        }
+        unlockRefresh();
+    }
+
+    private void stateMachineChanged() {
+        if(holdRefresh > 0) {
+            pendingRefresh = true;
+        } else {
+            refresh();
+        }
+    }
+
+    private void lockRefresh() {
+        holdRefresh += 1;
+    }
+
+    private void unlockRefresh() {
+        holdRefresh -= 1;
+        if(holdRefresh < 0) holdRefresh = 0;
+        if(holdRefresh == 0 && pendingRefresh) {
+            pendingRefresh = false;
+            refresh();
+        }
+    }
+
+    private void refresh() {
+        delay = sm.isPaused() ? 0 : sm.getDelay();
         ledPattern.setHexPattern(sm.getPattern(), false);
         for(int i=0; i<9; ++i) {
             mlFromPos(i).applyTo(i);
@@ -212,18 +271,14 @@ public class SimulationActivity extends AppCompatActivity {
 
     private void processButton(int pos) {
         sm.processOp(opFromPos(pos, false));
-        refreshDisplay();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if(!debugMode) return true;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_simulation, menu);
         return true;
-    }
-
-    private void unimplemented() {
-        Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -231,16 +286,16 @@ public class SimulationActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.miViewSim) {
             viewMode = (viewMode + 1) % 5;
-            refreshDisplay();
+            refresh();
         }
         else if(id == R.id.miPauseSim) {
-            unimplemented();
+            sm.processOp(StateMachine.OP_PAUSE);
         }
         else if(id == R.id.miFasterSim) {
-            unimplemented();
+            sm.processOp(StateMachine.OP_FASTER);
         }
         else if(id == R.id.miSlowerSim) {
-            unimplemented();
+            sm.processOp(StateMachine.OP_SLOWER);
         }
        return true;
     }
