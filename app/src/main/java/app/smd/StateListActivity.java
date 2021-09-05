@@ -74,10 +74,6 @@ public class StateListActivity extends AppCompatActivity {
         sla.notifyDataSetChanged();
     }
 
-    private void unimplemented() {
-        Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -92,7 +88,8 @@ public class StateListActivity extends AppCompatActivity {
             this.startActivity(intent);
         }
         else if(id == R.id.miProjectSettings) {
-            unimplemented();
+            Intent intent = new Intent(this, ProjectSettingsActivity.class);
+            this.startActivity(intent);
         }
         else if(id == R.id.miEditFrame) {
             Intent intent = new Intent(this, PatternActivity.class);

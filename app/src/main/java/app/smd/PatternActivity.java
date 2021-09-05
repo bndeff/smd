@@ -97,10 +97,6 @@ public class PatternActivity extends AppCompatActivity {
         tb.refresh();
     }
 
-    private void unimplemented() {
-        Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();

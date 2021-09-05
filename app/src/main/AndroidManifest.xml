@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StateMachineDesigner">
         <activity
+            android:name=".ProjectSettingsActivity"
+            android:exported="true" />
+        <activity
             android:name=".SimulationActivity"
             android:exported="true" />
         <activity

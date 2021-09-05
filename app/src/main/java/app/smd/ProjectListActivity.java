@@ -67,7 +67,7 @@ public class ProjectListActivity extends AppCompatActivity {
     }
 
     private String genProjectName() {
-        return String.format(Locale.US, "pr%03d", rand.nextInt(1000));
+        return String.format(Locale.US, "Project #%d", pl.getProjectCount() + 1);
     }
 
     @Override

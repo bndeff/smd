@@ -143,7 +143,7 @@ public class SimulationActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.miViewSim) {
             viewMode = (viewMode + 1) % 8;
-            tbControls.setDisplayMode(viewMode % 4 + 1, (viewMode / 4) * 2);
+            tbControls.setDisplayMode(viewMode % 4 + 1, viewMode / 4);
             tbControls.refresh();
         }
         else if(id == R.id.miPauseSim) {

@@ -34,10 +34,12 @@ public class TransferButtons extends TableLayout {
     public static final int BT_TX = 1;
     public static final int BT_OP = 2;
     public static final int BT_RESET = 3;
+    public static final int BT_DEF = 4;
 
     public static final int BG_HIDE = 0;
-    public static final int BG_DIFF = 1;
-    public static final int BG_SHOW = 2;
+    public static final int BG_SHOW = 1;
+    public static final int BG_DIFF = 2;
+    public static final int BG_FIXED = 3;
 
     public static final int FG_HIDE = 0;
     public static final int FG_TX = 1;
@@ -133,14 +135,19 @@ public class TransferButtons extends TableLayout {
             if(bt == BT_TX) {
                 opQuery = sm.getTransfer(bv);
                 opDisplay = (fgMode == FG_RAW) ? sm.getRawTransfer(bv) : opQuery;
-            } else {
+            }
+            else if(bt == BT_DEF) {
+                opQuery = sm.getDefaultTransfer(bv);
+                opDisplay = opQuery;
+            }
+            else {
                 opQuery = bv;
                 opDisplay = bv;
             }
             boolean opRem;
             int state;
             String pattern;
-            if(fgMode == FG_STATE || bgMode >= BG_DIFF) {
+            if(fgMode == FG_STATE || bgMode >= BG_SHOW) {
                 StateMachine.OpResult res = sm.queryOp(opQuery);
                 opRem = res.opRemains;
                 state = res.newState;
@@ -176,7 +183,8 @@ public class TransferButtons extends TableLayout {
                     txt.setText(Integer.toString(opDisplay));
                 }
             }
-            if(bgMode == BG_HIDE || (bgMode == BG_DIFF && state == currentState) || pattern.isEmpty()) {
+            if(bgMode == BG_HIDE || (bgMode == BG_DIFF && state == currentState) ||
+                    (bgMode == BG_FIXED && opDisplay < 0) || pattern.isEmpty()) {
                 led.setVisibility(INVISIBLE);
             } else {
                 led.setVisibility(VISIBLE);
