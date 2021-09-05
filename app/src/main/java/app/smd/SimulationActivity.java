@@ -2,6 +2,7 @@ package app.smd;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SimulationActivity extends AppCompatActivity {
 
@@ -37,6 +39,8 @@ public class SimulationActivity extends AppCompatActivity {
     private boolean pendingRefresh = false;
     private LedGridView ledPattern;
     private TransferButtons tbControls;
+    private MenuItem pauseMenu = null;
+    private boolean isPaused = false;
 
     private boolean isPosAvailable(int pos) {
         if(debugMode) return true;
@@ -53,7 +57,9 @@ public class SimulationActivity extends AppCompatActivity {
         int mode = getIntent().getIntExtra("mode", 0);
         debugMode = mode == 2;
 
-        sm = new StateMachine((new PersistedProjectList(this)).getMachine(), mode != 0);
+        StateMachine osm = (new PersistedProjectList(this)).getMachine();
+        this.setTitle(osm.getName());
+        sm = new StateMachine(osm, mode != 0);
         initState = sm.getCurrentState();
         tbControls.setStateMachine(sm);
         tbControls.setupButton(1, TransferButtons.BT_TX, StateMachine.TX_UP, v -> processTx(StateMachine.TX_UP));
@@ -124,6 +130,21 @@ public class SimulationActivity extends AppCompatActivity {
         delay = sm.isPaused() ? 0 : sm.getDelay();
         ledPattern.setHexPattern(sm.getPattern(), false);
         tbControls.refresh();
+        if(debugMode) {
+            this.setTitle(String.format(Locale.US, "Frame #%d", sm.getCurrentState() + 1));
+        }
+        if(pauseMenu != null) {
+            if(sm.isPaused() != isPaused) {
+                isPaused = !isPaused;
+                if(isPaused) {
+                    pauseMenu.setIcon(R.drawable.ic_play);
+                    pauseMenu.setTitle("Continue");
+                } else {
+                    pauseMenu.setIcon(R.drawable.ic_pause);
+                    pauseMenu.setTitle("Pause");
+                }
+            }
+        }
     }
 
     private void processTx(int tx) {
@@ -135,6 +156,7 @@ public class SimulationActivity extends AppCompatActivity {
         if(!debugMode) return true;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_simulation, menu);
+        pauseMenu = menu.findItem(R.id.miPauseSim);
         return true;
     }
 

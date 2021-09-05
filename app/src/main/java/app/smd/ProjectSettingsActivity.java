@@ -42,6 +42,8 @@ public class ProjectSettingsActivity extends AppCompatActivity {
         tb.setDisplayMode(TransferButtons.FG_RAW, TransferButtons.BG_FIXED);
         tb.refresh();
 
+        this.setTitle(sm.getName());
+
         pl.setOnChangeListener(() -> {
             tb.refresh();
         });

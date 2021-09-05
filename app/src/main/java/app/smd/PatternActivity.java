@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 public class PatternActivity extends AppCompatActivity {
 
     private PersistedProjectList pl;
@@ -44,9 +46,11 @@ public class PatternActivity extends AppCompatActivity {
         tb.setupButton(7, TransferButtons.BT_TX, StateMachine.TX_DOWN, v -> updateTx(StateMachine.TX_DOWN));
         tb.setDisplayMode(TransferButtons.FG_RAW, TransferButtons.BG_SHOW);
         tb.refresh();
+        updateTitle();
 
         pl.setOnChangeListener(() -> {
             tb.refresh();
+            updateTitle();
         });
     }
 
@@ -68,6 +72,7 @@ public class PatternActivity extends AppCompatActivity {
         sm = pl.getMachine();
         tb.setStateMachine(sm);
         tb.refresh();
+        updateTitle();
     }
 
     @Override
@@ -87,6 +92,12 @@ public class PatternActivity extends AppCompatActivity {
 
     private void applyChanges() {
         pl.persistState();
+    }
+
+    private void updateTitle() {
+        this.setTitle(sm.getName());
+        String frameTitle = String.format(Locale.US, "Frame #%d", sm.getCurrentState() + 1);
+        ((Toolbar) findViewById(R.id.tbPatternActions)).setTitle(frameTitle);
     }
 
     private void updateTx(int tx) {

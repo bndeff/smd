@@ -14,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 public class StateListActivity extends AppCompatActivity {
 
     private PersistedProjectList pl;
@@ -37,6 +39,9 @@ public class StateListActivity extends AppCompatActivity {
 
         sla = new StateListAdapter(sm);
         rv.setAdapter(sla);
+
+        pl.setOnChangeListener(this::updateTitle);
+        updateTitle();
     }
 
     @Override
@@ -52,6 +57,7 @@ public class StateListActivity extends AppCompatActivity {
         sm = pl.getMachine();
         sla = new StateListAdapter(sm);
         rv.setAdapter(sla);
+        updateTitle();
     }
 
     @Override
@@ -72,6 +78,12 @@ public class StateListActivity extends AppCompatActivity {
     private void applyChanges() {
         pl.persistState();
         sla.notifyDataSetChanged();
+    }
+
+    private void updateTitle() {
+        this.setTitle(sm.getName());
+        String frameTitle = String.format(Locale.US, "Frame #%d", sm.getCurrentState() + 1);
+        ((Toolbar) findViewById(R.id.tbFrameActions)).setTitle(frameTitle);
     }
 
     @Override

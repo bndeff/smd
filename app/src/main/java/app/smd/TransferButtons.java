@@ -180,7 +180,7 @@ public class TransferButtons extends TableLayout {
                 } else {
                     txt.setVisibility(VISIBLE);
                     img.setVisibility(INVISIBLE);
-                    txt.setText(Integer.toString(opDisplay));
+                    txt.setText(Integer.toString(opDisplay + 1));
                 }
             }
             if(bgMode == BG_HIDE || (bgMode == BG_DIFF && state == currentState) ||
