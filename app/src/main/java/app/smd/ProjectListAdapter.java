@@ -22,11 +22,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ledPreview1 = (LedGridView) itemView.findViewById(R.id.ledPreview1);
-            ledPreview1.setEditable(false);
             ledPreview2 = (LedGridView) itemView.findViewById(R.id.ledPreview2);
-            ledPreview2.setEditable(false);
             ledPreview3 = (LedGridView) itemView.findViewById(R.id.ledPreview3);
-            ledPreview3.setEditable(false);
             tvProjectName = (TextView) itemView.findViewById(R.id.tvProjectName);
         }
 

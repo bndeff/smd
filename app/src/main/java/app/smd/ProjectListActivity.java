@@ -74,7 +74,8 @@ public class ProjectListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.miPlayProject) {
-            unimplemented();
+            Intent intent = new Intent(this, SimulationActivity.class);
+            this.startActivity(intent);
         }
         else if(id == R.id.miEditProject) {
             Intent intent = new Intent(this, StateListActivity.class);

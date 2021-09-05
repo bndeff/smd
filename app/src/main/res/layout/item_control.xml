@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/thumbnail_size"
+    android:layout_height="@dimen/thumbnail_size"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/thumbnail_padding">
+
+    <Button
+        android:id="@+id/btnTransfer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/thumbnail_padding"
+        android:layout_marginEnd="@dimen/thumbnail_padding"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/txtTransfer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="5dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        android:text="" />
+
+    <ImageView
+        android:id="@+id/imgTransfer"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:elevation="10dp"
+        android:src="@drawable/ic_debug"
+        app:tint="@color/white" />
+
+    <app.smd.LedGridView
+        android:id="@+id/ledTransfer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/thumbnail_padding"
+        android:elevation="15dp"
+        android:background="#000000"
+        android:visibility="invisible"
+        app:margin="2dp"
+        app:offColor="#404040"
+        app:onColor="#ff4040"
+        app:editable="false" />
+
+</FrameLayout>

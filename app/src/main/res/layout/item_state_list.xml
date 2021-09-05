@@ -12,6 +12,7 @@
         android:background="#000000"
         app:offColor="#404040"
         app:onColor="#ff4040"
-        app:margin="2dp" />
+        app:margin="2dp"
+        app:editable="false" />
 
 </LinearLayout>

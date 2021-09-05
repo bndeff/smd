@@ -138,7 +138,7 @@ public class StateMachine {
     public static final int OP_FASTER = -5;
     public static final int OP_SLOWER = -6;
     public static final int OP_NONE = -7;
-    public static final int OP_ERROR = -8;
+    public static final int OP_ERROR = -8;  // also reusing for error state
     public static final int NUM_OP = 8;
 
     public StateMachine() {
@@ -304,7 +304,7 @@ public class StateMachine {
         clipboard = null;
         name = "";
         resetPlayback();
-        if(error) currentState = -1;
+        if(error) currentState = OP_ERROR;
     }
 
     public boolean isErrorState() {
@@ -313,7 +313,7 @@ public class StateMachine {
 
     public void gotoState(int state) {
         if(state < 0 || state >= states.size()) {
-            currentState = -1;
+            currentState = OP_ERROR;
         } else {
             currentState = state;
         }
@@ -434,7 +434,7 @@ public class StateMachine {
                 }
                 break;
             default:
-                currentState = -1;  // error
+                currentState = OP_ERROR;
                 fireOnChange();
         }
     }
@@ -447,26 +447,40 @@ public class StateMachine {
         return currentState == states.size() - 1;
     }
 
-    public void gotoNextState(boolean rollOver) {
-        if(isErrorState()) return;
+    public int getNextState(boolean rollOver) {
+        if(isErrorState()) return currentState;
         if(isLastState()) {
-            if(!rollOver) return;
-            currentState = 0;
+            if(!rollOver) return currentState;
+            return 0;
         } else {
-            currentState = currentState + 1;
+            return currentState + 1;
         }
-        fireOnChange();
+    }
+
+    public void gotoNextState(boolean rollOver) {
+        int ns = getNextState(rollOver);
+        if(ns != currentState) {
+            currentState = ns;
+            fireOnChange();
+        }
+    }
+
+    public int getPrevState(boolean rollOver) {
+        if(isErrorState()) return currentState;
+        if(isFirstState()) {
+            if(!rollOver) return currentState;
+            return states.size() -1;
+        } else {
+            return currentState - 1;
+        }
     }
 
     public void gotoPrevState(boolean rollOver){
-        if(isErrorState()) return;
-        if(isFirstState()) {
-            if(!rollOver) return;
-            currentState = states.size() -1;
-        } else {
-            currentState = currentState - 1;
+        int ps = getPrevState(rollOver);
+        if(ps != currentState) {
+            currentState = ps;
+            fireOnChange();
         }
-        fireOnChange();
     }
 
     private void shiftStateTransfers(State s, int threshold, int shift) {
@@ -503,7 +517,7 @@ public class StateMachine {
     private void addStateInternal(State s) {
         if(isErrorState()) return;
         if(states.size() >= stateCap) {
-            currentState = -1;  // error
+            currentState = OP_ERROR;
             return;
         }
         states.add(currentState + 1, s);

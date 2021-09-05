@@ -24,7 +24,7 @@ public class PatternActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pattern);
 
         pl = new PersistedProjectList(this);
-        sm = pl.getWrappedProjectList().getMachine();
+        sm = pl.getMachine();
         led = (LedGridView) findViewById(R.id.ledPattern);
         led.setHexPattern(sm.getPattern(), false);
         led.setOnChangeListener(() -> {
@@ -42,7 +42,7 @@ public class PatternActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         pl.loadState();
-        sm = pl.getWrappedProjectList().getMachine();
+        sm = pl.getMachine();
     }
 
     @Override

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/miViewSim"
+        android:icon="@drawable/ic_view"
+        android:title="Cycle view mode"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miPauseSim"
+        android:icon="@drawable/ic_pause"
+        android:title="Pause"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miFasterSim"
+        android:icon="@drawable/ic_faster"
+        android:title="Faster"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miSlowerSim"
+        android:icon="@drawable/ic_slower"
+        android:title="Slower"
+        app:showAsAction="ifRoom" />
+</menu>

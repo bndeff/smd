@@ -27,7 +27,7 @@ public class StateListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_state_list);
 
         pl = new PersistedProjectList(this);
-        sm = pl.getWrappedProjectList().getMachine();
+        sm = pl.getMachine();
 
         int tileWidth = (int) Math.ceil(getResources().getDimension(R.dimen.thumbnail_size) +
                 2 * getResources().getDimension(R.dimen.thumbnail_padding));
@@ -49,7 +49,7 @@ public class StateListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         pl.loadState();
-        sm = pl.getWrappedProjectList().getMachine();
+        sm = pl.getMachine();
         sla = new StateListAdapter(sm);
         rv.setAdapter(sla);
     }
@@ -82,10 +82,12 @@ public class StateListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.miPlayFrame) {
-            unimplemented();
+            Intent intent = new Intent(this, SimulationActivity.class);
+            this.startActivity(intent);
         }
         else if(id == R.id.miDebugFrame) {
-            unimplemented();
+            Intent intent = new Intent(this, SimulationActivity.class);
+            this.startActivity(intent);
         }
         else if(id == R.id.miProjectSettings) {
             unimplemented();

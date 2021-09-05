@@ -19,7 +19,6 @@ public class StateListAdapter extends RecyclerView.Adapter<StateListAdapter.View
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ledPreview = (LedGridView) itemView.findViewById(R.id.ledPreview);
-            ledPreview.setEditable(false);
         }
 
         @SuppressLint("ResourceAsColor")
