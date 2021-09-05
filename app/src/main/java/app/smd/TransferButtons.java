@@ -106,7 +106,6 @@ public class TransferButtons extends TableLayout {
     public void setDisplayMode(int fg, int bg) {
         fgMode = fg;
         bgMode = bg;
-        refresh();
     }
 
     @SuppressLint("SetTextI18n")

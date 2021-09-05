@@ -13,8 +13,8 @@
         android:title="Next frame"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/miLockTransfers"
-        android:icon="@drawable/ic_locked"
-        android:title="Unlock transfers"
+        android:id="@+id/miTransfers"
+        android:icon="@drawable/ic_transfers"
+        android:title="Transfers"
         app:showAsAction="ifRoom" />
 </menu>
