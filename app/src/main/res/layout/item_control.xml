@@ -13,11 +13,24 @@
         android:layout_marginEnd="@dimen/thumbnail_padding"
         android:text="" />
 
+    <app.smd.LedGridView
+        android:id="@+id/ledTransfer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/thumbnail_padding"
+        android:elevation="5dp"
+        android:background="#000000"
+        android:visibility="invisible"
+        app:margin="2dp"
+        app:offColor="#404040"
+        app:onColor="#ff4040"
+        app:editable="false" />
+
     <TextView
         android:id="@+id/txtTransfer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="5dp"
+        android:elevation="10dp"
         android:gravity="center"
         android:textColor="@color/white"
         android:visibility="invisible"
@@ -28,21 +41,8 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
-        android:elevation="10dp"
+        android:elevation="15dp"
         android:src="@drawable/ic_debug"
         app:tint="@color/white" />
-
-    <app.smd.LedGridView
-        android:id="@+id/ledTransfer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/thumbnail_padding"
-        android:elevation="15dp"
-        android:background="#000000"
-        android:visibility="invisible"
-        app:margin="2dp"
-        app:offColor="#404040"
-        app:onColor="#ff4040"
-        app:editable="false" />
 
 </FrameLayout>

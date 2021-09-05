@@ -17,6 +17,7 @@ public class PatternActivity extends AppCompatActivity {
     private PersistedProjectList pl;
     private StateMachine sm;
     private LedGridView led;
+    private boolean transfersLocked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +27,16 @@ public class PatternActivity extends AppCompatActivity {
         pl = new PersistedProjectList(this);
         sm = pl.getMachine();
         led = (LedGridView) findViewById(R.id.ledPattern);
-        led.setHexPattern(sm.getPattern(), false);
+        loadFrame();
         led.setOnChangeListener(() -> {
             sm.setPattern(led.getHexPattern());
         });
+        transfersLocked = true;
+    }
+
+    private void loadFrame() {
+        led.setHexPattern(sm.getPattern(), false);
+        led.clearUndo();
     }
 
     @Override
@@ -71,7 +78,17 @@ public class PatternActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.miUndoPattern) {
+        if(id == R.id.miPreviousFrame) {
+            sm.gotoPrevState(true);
+            loadFrame();
+            applyChanges();
+        }
+        else if(id == R.id.miNextFrame) {
+            sm.gotoNextState(true);
+            loadFrame();
+            applyChanges();
+        }
+        else if(id == R.id.miUndoPattern) {
             led.undo();
             applyChanges();
         }
@@ -80,7 +97,14 @@ public class PatternActivity extends AppCompatActivity {
             applyChanges();
         }
         else if(id == R.id.miLockTransfers) {
-            unimplemented();
+            transfersLocked = !transfersLocked;
+            if(transfersLocked) {
+                item.setIcon(R.drawable.ic_locked);
+                item.setTitle("Unlock transfers");
+            } else {
+                item.setIcon(R.drawable.ic_unlocked);
+                item.setTitle("Lock transfers");
+            }
         }
         else if(id == R.id.miShiftPatternLeft) {
             led.shiftLeft();

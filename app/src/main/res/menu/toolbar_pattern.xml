@@ -3,6 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/miUndoPattern"
+        android:icon="@drawable/ic_undo"
+        android:title="Undo"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miRedoPattern"
+        android:icon="@drawable/ic_redo"
+        android:title="Redo"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/miShiftPatternLeft"
         android:icon="@drawable/ic_move_left"
         android:title="Shift left"

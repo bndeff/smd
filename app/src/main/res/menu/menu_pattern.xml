@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/miUndoPattern"
-        android:icon="@drawable/ic_undo"
-        android:title="Undo"
+        android:id="@+id/miPreviousFrame"
+        android:icon="@drawable/ic_previous"
+        android:title="Previous frame"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/miRedoPattern"
-        android:icon="@drawable/ic_redo"
-        android:title="Redo"
+        android:id="@+id/miNextFrame"
+        android:icon="@drawable/ic_next"
+        android:title="Next frame"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miLockTransfers"
