@@ -36,145 +36,11 @@ public class SimulationActivity extends AppCompatActivity {
     private int holdRefresh = 0;
     private boolean pendingRefresh = false;
     private LedGridView ledPattern;
-    private final List<Button> btnTransfer = new ArrayList<>();
-    private final List<TextView> txtTransfer = new ArrayList<>();
-    private final List<ImageView> imgTransfer = new ArrayList<>();
-    private final List<LedGridView> ledTransfer = new ArrayList<>();
-
-    private class MultiLabel {
-        private final int type;
-        private final int value;
-        private final String pattern;
-
-        MultiLabel(int type, int value) {
-            this.type = type;
-            this.value = value;
-            this.pattern = "";
-        }
-
-        MultiLabel(int type, String pattern) {
-            this.type = type;
-            this.value = 0;
-            this.pattern = pattern;
-        }
-
-        @SuppressLint("SetTextI18n")
-        void applyTo(int pos) {
-            Button btn = btnTransfer.get(pos);
-            TextView txt = txtTransfer.get(pos);
-            ImageView img = imgTransfer.get(pos);
-            LedGridView led = ledTransfer.get(pos);
-            btn.setVisibility(View.VISIBLE);
-            txt.setVisibility(View.INVISIBLE);
-            img.setVisibility(View.INVISIBLE);
-            led.setVisibility(View.INVISIBLE);
-            switch(type) {
-                case 0:
-                    btn.setVisibility(View.INVISIBLE);
-                    break;
-                case 1:
-                    txt.setVisibility(View.VISIBLE);
-                    txt.setText(Integer.toString(value));
-                    break;
-                case 2:
-                    img.setVisibility(View.VISIBLE);
-                    img.setImageResource(value);
-                    break;
-                case 3:
-                    led.setVisibility(View.VISIBLE);
-                    led.setHexPattern(pattern, false);
-            }
-        }
-    }
+    private TransferButtons tbControls;
 
     private boolean isPosAvailable(int pos) {
         if(debugMode) return true;
         return pos != 0 && pos != 2 && pos != 6 && pos != 8;
-    }
-
-    private int resFromPos(int pos) {
-        switch (pos) {
-            case 0: return R.drawable.ic_reset;
-            case 1: return R.drawable.ic_up;
-            case 2: return R.drawable.ic_auto;
-            case 3: return R.drawable.ic_left;
-            case 4: return R.drawable.ic_click;
-            case 5: return R.drawable.ic_right;
-            case 6: return R.drawable.ic_previous;
-            case 7: return R.drawable.ic_down;
-            case 8: return R.drawable.ic_next;
-            default: return R.drawable.ic_debug;
-        }
-    }
-
-    private int txFromPos(int pos) {
-        switch (pos) {
-            case 1: return StateMachine.TX_UP;
-            case 2: return StateMachine.TX_AUTO;
-            case 3: return StateMachine.TX_LEFT;
-            case 4: return StateMachine.TX_CLICK;
-            case 5: return StateMachine.TX_RIGHT;
-            case 7: return StateMachine.TX_DOWN;
-            default: return -1;
-        }
-    }
-
-    private int opFromPos(int pos, boolean raw) {
-        switch (pos) {
-            case 0: return initState;
-            case 1: case 2: case 3: case 4: case 5: case 7:
-                int tx = txFromPos(pos);
-                return raw ? sm.getRawTransfer(tx) : sm.getTransfer(tx);
-            case 6: return StateMachine.OP_PREV;
-            case 8: return StateMachine.OP_NEXT;
-            default: return StateMachine.OP_ERROR;
-        }
-    }
-
-    private StateMachine smFromPos(int pos) {
-        int op = opFromPos(pos, false);
-        StateMachine nsm = new StateMachine(sm, true);
-        nsm.processOp(op);
-        return nsm;
-    }
-
-    private int stateFromPos(int pos) {
-        return smFromPos(pos).getCurrentState();
-    }
-
-    private String patternFromPos(int pos) {
-        return smFromPos(pos).getPattern();
-    }
-
-    private int resFromOp(int op) {
-        switch (op) {
-            case StateMachine.OP_INHERIT: return R.drawable.ic_default;
-            case StateMachine.OP_NEXT: return R.drawable.ic_next;
-            case StateMachine.OP_PREV: return R.drawable.ic_previous;
-            case StateMachine.OP_PAUSE: return R.drawable.ic_pause;
-            case StateMachine.OP_FASTER: return R.drawable.ic_faster;
-            case StateMachine.OP_SLOWER: return R.drawable.ic_slower;
-            case StateMachine.OP_NONE: return R.drawable.ic_none;
-            case StateMachine.OP_ERROR: return R.drawable.ic_error;
-            default: return R.drawable.ic_debug;
-        }
-    }
-
-    private MultiLabel mlFromOp(int op) {
-        if(op < 0) return new MultiLabel(2, resFromOp(op));
-        return new MultiLabel(1, op);
-    }
-
-    private MultiLabel mlFromPos(int pos) {
-        if(!isPosAvailable(pos)) return new MultiLabel(0, 0);
-        switch(viewMode) {
-            case 0: return new MultiLabel(2, resFromPos(pos));
-            case 1: return mlFromOp(opFromPos(pos, true));
-            case 2: return mlFromOp(opFromPos(pos, false));
-            case 3: return new MultiLabel(1, stateFromPos(pos));
-            case 4: return new MultiLabel(3, patternFromPos(pos));
-            default: return new MultiLabel(2, R.drawable.ic_debug);
-        }
     }
 
     @Override
@@ -182,32 +48,25 @@ public class SimulationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simulation);
         ledPattern = findViewById(R.id.ledPattern);
-
-        LayoutInflater inflater = LayoutInflater.from(this);
-        TableLayout tlControls = (TableLayout) findViewById(R.id.tlControls);
-        for(int j=0; j<3; ++j) {
-            TableRow tr = new TableRow(this);
-            tr.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            for(int i=0; i<3; ++i) {
-                inflater.inflate(R.layout.item_control, tr, true);
-                FrameLayout fl = (FrameLayout) tr.getChildAt(i);
-                Button btn = fl.findViewById(R.id.btnTransfer);
-                int pos = btnTransfer.size();
-                btn.setOnClickListener(v -> processButton(pos));
-                btnTransfer.add(btn);
-                txtTransfer.add(fl.findViewById(R.id.txtTransfer));
-                imgTransfer.add(fl.findViewById(R.id.imgTransfer));
-                ledTransfer.add(fl.findViewById(R.id.ledTransfer));
-            }
-            tlControls.addView(tr);
-        }
+        tbControls = findViewById(R.id.tbControls);
 
         int mode = getIntent().getIntExtra("mode", 0);
-        viewMode = 0;
         debugMode = mode == 2;
 
         sm = new StateMachine((new PersistedProjectList(this)).getMachine(), mode != 0);
         initState = sm.getCurrentState();
+        tbControls.setStateMachine(sm);
+        tbControls.setupButton(1, TransferButtons.BT_TX, StateMachine.TX_UP, v -> processTx(StateMachine.TX_UP));
+        tbControls.setupButton(3, TransferButtons.BT_TX, StateMachine.TX_LEFT, v -> processTx(StateMachine.TX_LEFT));
+        tbControls.setupButton(4, TransferButtons.BT_TX, StateMachine.TX_CLICK, v -> processTx(StateMachine.TX_CLICK));
+        tbControls.setupButton(5, TransferButtons.BT_TX, StateMachine.TX_RIGHT, v -> processTx(StateMachine.TX_RIGHT));
+        tbControls.setupButton(7, TransferButtons.BT_TX, StateMachine.TX_DOWN, v -> processTx(StateMachine.TX_DOWN));
+        if(debugMode) {
+            tbControls.setupButton(0, TransferButtons.BT_RESET, initState, v -> sm.gotoState(initState));
+            tbControls.setupButton(2, TransferButtons.BT_TX, StateMachine.TX_AUTO, v -> processTx(StateMachine.TX_AUTO));
+            tbControls.setupButton(6, TransferButtons.BT_OP, StateMachine.OP_PREV, v -> sm.processOp(StateMachine.OP_PREV));
+            tbControls.setupButton(8, TransferButtons.BT_OP, StateMachine.OP_NEXT, v -> sm.processOp(StateMachine.OP_NEXT));
+        }
         refresh();
 
         sm.setOnChangeListener(this::stateMachineChanged);
@@ -264,13 +123,11 @@ public class SimulationActivity extends AppCompatActivity {
     private void refresh() {
         delay = sm.isPaused() ? 0 : sm.getDelay();
         ledPattern.setHexPattern(sm.getPattern(), false);
-        for(int i=0; i<9; ++i) {
-            mlFromPos(i).applyTo(i);
-        }
+        tbControls.refresh();
     }
 
-    private void processButton(int pos) {
-        sm.processOp(opFromPos(pos, false));
+    private void processTx(int tx) {
+        sm.processOp(sm.getTransfer(tx));
     }
 
     @Override
@@ -285,8 +142,8 @@ public class SimulationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.miViewSim) {
-            viewMode = (viewMode + 1) % 5;
-            refresh();
+            viewMode = (viewMode + 1) % 8;
+            tbControls.setDisplayMode(viewMode % 4 + 1, (viewMode / 4) * 2);
         }
         else if(id == R.id.miPauseSim) {
             sm.processOp(StateMachine.OP_PAUSE);

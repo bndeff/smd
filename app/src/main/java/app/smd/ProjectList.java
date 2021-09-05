@@ -30,8 +30,8 @@ public class ProjectList {
     }
 
     private String extractPreview(StateMachine sm) {
-        return sm.getThumbnail(0) + sm.getThumbnail(1) +
-                sm.getThumbnail(2) + sm.getName();
+        return sm.getThumbnail(0, false) + sm.getThumbnail(1, false) +
+                sm.getThumbnail(2, false) + sm.getName();
     }
 
     private Project createProject(StateMachine sm) {

@@ -1,5 +1,7 @@
 package app.smd;
 
+import android.graphics.Path;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -13,7 +15,7 @@ public class StateMachine {
         int speed;
 
         State() {
-            pattern = "0000000000000000";
+            pattern = nullPattern;
             transfer = new int[NUM_TX];
             transfer[TX_LEFT] = OP_INHERIT;
             transfer[TX_RIGHT] = OP_INHERIT;
@@ -122,6 +124,9 @@ public class StateMachine {
     private static final String magic = "73743031";
     private static final int[] timerMultipliers = {1, 2, 4, 0};
     private static final int[] timerList = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 0};
+
+    private static final String nullPattern = "0000000000000000";
+    private static final String errorPattern = "81bda1bda1a13c81";
 
     public static final int TX_LEFT = 0;
     public static final int TX_RIGHT = 1;
@@ -338,13 +343,13 @@ public class StateMachine {
     }
 
     public String getPattern() {
-        if(isErrorState()) return "81bda1bda1a13c81";
+        if(isErrorState()) return errorPattern;
         return states.get(currentState).pattern;
     }
 
-    public String getThumbnail(int index) {
+    public String getThumbnail(int index, boolean showErrors) {
         if(index < 0 || index >= states.size()) {
-            return "0000000000000000";
+            return showErrors ? errorPattern : nullPattern;
         } else {
             return states.get(index).pattern;
         }
@@ -403,39 +408,72 @@ public class StateMachine {
         fireOnChange();
     }
 
-    public void processOp(int op) {
-        if(isErrorState()) return;
+    public static class OpResult {
+        int newState;
+        boolean opRemains;
+    }
+
+    public OpResult queryOp(int op) {
+        OpResult res = new OpResult();
         if(op >= 0 && op < states.size()) {
-            currentState = op;
-            fireOnChange();
-            return;
+            res.newState = op;
+            res.opRemains = false;
+            return res;
         }
         switch (op) {
             case OP_NEXT:
-                gotoNextState(true);
+                res.newState = getNextState(true);
+                res.opRemains = false;
                 break;
             case OP_PREV:
-                gotoPrevState(true);
+                res.newState = getPrevState(true);
+                res.opRemains = false;
                 break;
             case OP_PAUSE:
-                playbackPaused = !playbackPaused;
-                fireOnChange();
-                break;
             case OP_FASTER:
-                if(playbackSpeed > 0) {
-                    --playbackSpeed;
-                    fireOnChange();
-                }
-                break;
             case OP_SLOWER:
-                if(playbackSpeed < timerList.length-1) {
-                    ++playbackSpeed;
-                    fireOnChange();
-                }
+                res.newState = currentState;
+                res.opRemains = true;
+                break;
+            case OP_NONE:
+                res.newState = currentState;
+                res.opRemains = false;
                 break;
             default:
-                currentState = OP_ERROR;
-                fireOnChange();
+                res.newState = OP_ERROR;
+                res.opRemains = false;
+        }
+        return res;
+    }
+
+    public void processOp(int op) {
+        OpResult res = queryOp(op);
+        if(res.newState != currentState) {
+            currentState = res.newState;
+            fireOnChange();
+        }
+        if(res.opRemains) {
+            switch (op) {
+                case OP_PAUSE:
+                    playbackPaused = !playbackPaused;
+                    fireOnChange();
+                    break;
+                case OP_FASTER:
+                    if (playbackSpeed > 0) {
+                        --playbackSpeed;
+                        fireOnChange();
+                    }
+                    break;
+                case OP_SLOWER:
+                    if (playbackSpeed < timerList.length - 1) {
+                        ++playbackSpeed;
+                        fireOnChange();
+                    }
+                    break;
+                default:
+                    currentState = OP_ERROR;
+                    fireOnChange();
+            }
         }
     }
 

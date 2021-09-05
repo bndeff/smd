@@ -19,11 +19,11 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/thumbnail_padding"
         android:elevation="5dp"
-        android:background="#000000"
+        android:background="#80000000"
         android:visibility="invisible"
         app:margin="2dp"
-        app:offColor="#404040"
-        app:onColor="#ff4040"
+        app:offColor="#80404040"
+        app:onColor="#80ff4040"
         app:editable="false" />
 
     <TextView

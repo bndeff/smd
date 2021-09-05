@@ -43,7 +43,7 @@ public class StateListAdapter extends RecyclerView.Adapter<StateListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindFrame(sm.getThumbnail(position), sm.getCurrentState() == position);
+        holder.bindFrame(sm.getThumbnail(position, true), sm.getCurrentState() == position);
         holder.itemView.setOnClickListener(v -> {
             sm.gotoState(position);
             notifyDataSetChanged();
