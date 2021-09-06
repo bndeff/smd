@@ -7,21 +7,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
-import java.util.Random;
 
 public class ProjectListActivity extends AppCompatActivity {
 
     private PersistedProjectList pl;
     private ProjectListAdapter pla;
-    private final Random rand = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +57,6 @@ public class ProjectListActivity extends AppCompatActivity {
         pla.notifyDataSetChanged();
     }
 
-    private void unimplemented() {
-        Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show();
-    }
-
     private String genProjectName() {
         return String.format(Locale.US, "Project #%d", pl.getProjectCount() + 1);
     }
@@ -90,20 +81,15 @@ public class ProjectListActivity extends AppCompatActivity {
             pl.cloneProject(genProjectName());
             applyChanges();
         }
-        else if(id == R.id.miOpenProject) {
-            unimplemented();
+        else if(id == R.id.miImportProject) {
+            Intent intent = new Intent(this, DataActivity.class);
+            intent.putExtra("mode", 0);
+            this.startActivity(intent);
         }
-        else if(id == R.id.miSaveProject) {
-            unimplemented();
-        }
-        else if(id == R.id.miShareProject) {
-            unimplemented();
-        }
-        else if(id == R.id.miUploadProject) {
-            unimplemented();
-        }
-        else if(id == R.id.miDownloadProject) {
-            unimplemented();
+        else if(id == R.id.miExportProject) {
+            Intent intent = new Intent(this, DataActivity.class);
+            intent.putExtra("mode", 1);
+            this.startActivity(intent);
         }
         else if(id == R.id.miDeleteProject) {
             pl.deleteProject();

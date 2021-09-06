@@ -42,4 +42,20 @@
         android:icon="@drawable/ic_clear"
         android:title="Clear"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miAddPatternFrame"
+        android:icon="@drawable/ic_add"
+        android:title="Add frame"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miClonePatternFrame"
+        android:icon="@drawable/ic_clone"
+        android:title="Clone frame"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miDeletePatternFrame"
+        android:icon="@drawable/ic_delete"
+        android:title="Delete frame"
+        app:showAsAction="ifRoom" />
+
 </menu>

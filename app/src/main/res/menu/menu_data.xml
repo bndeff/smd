@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/miPreviousProject"
+        android:icon="@drawable/ic_previous"
+        android:title="Previous project"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miNextProject"
+        android:icon="@drawable/ic_next"
+        android:title="Next project"
+        app:showAsAction="ifRoom" />
+</menu>

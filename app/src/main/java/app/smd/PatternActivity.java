@@ -157,6 +157,21 @@ public class PatternActivity extends AppCompatActivity {
             led.clear();
             applyChanges();
         }
+        else if(id == R.id.miAddPatternFrame) {
+            sm.addState();
+            loadFrame();
+            applyChanges();
+        }
+        else if(id == R.id.miClonePatternFrame) {
+            sm.cloneState();
+            loadFrame();
+            applyChanges();
+        }
+        else if(id == R.id.miDeletePatternFrame) {
+            sm.removeState();
+            loadFrame();
+            applyChanges();
+        }
         return true;
     }
 }
