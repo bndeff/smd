@@ -40,8 +40,8 @@ public class StateListActivity extends AppCompatActivity {
         sla = new StateListAdapter(sm);
         rv.setAdapter(sla);
 
-        pl.setOnChangeListener(this::updateTitle);
-        updateTitle();
+        pl.setOnChangeListener(this::updateFrame);
+        updateFrame();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class StateListActivity extends AppCompatActivity {
         sm = pl.getMachine();
         sla = new StateListAdapter(sm);
         rv.setAdapter(sla);
-        updateTitle();
+        updateFrame();
     }
 
     @Override
@@ -78,6 +78,13 @@ public class StateListActivity extends AppCompatActivity {
     private void applyChanges() {
         pl.persistState();
         sla.notifyDataSetChanged();
+    }
+
+    private void updateFrame() {
+        if(sm.isErrorState()) {
+            sm.gotoState(sm.getStateCount()-1);
+        }
+        updateTitle();
     }
 
     private void updateTitle() {

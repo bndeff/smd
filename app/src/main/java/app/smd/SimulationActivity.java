@@ -42,11 +42,6 @@ public class SimulationActivity extends AppCompatActivity {
     private MenuItem pauseMenu = null;
     private boolean isPaused = false;
 
-    private boolean isPosAvailable(int pos) {
-        if(debugMode) return true;
-        return pos != 0 && pos != 2 && pos != 6 && pos != 8;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,7 +126,11 @@ public class SimulationActivity extends AppCompatActivity {
         ledPattern.setHexPattern(sm.getPattern(), false);
         tbControls.refresh();
         if(debugMode) {
-            this.setTitle(String.format(Locale.US, "Frame #%d", sm.getCurrentState() + 1));
+            if(sm.isErrorState()) {
+                this.setTitle("Error state");
+            } else {
+                this.setTitle(String.format(Locale.US, "Frame #%d", sm.getCurrentState() + 1));
+            }
         }
         if(pauseMenu != null) {
             if(sm.isPaused() != isPaused) {

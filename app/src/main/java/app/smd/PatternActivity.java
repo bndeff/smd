@@ -55,6 +55,9 @@ public class PatternActivity extends AppCompatActivity {
     }
 
     private void loadFrame() {
+        if(sm.isErrorState()) {
+            sm.gotoState(sm.getStateCount()-1);
+        }
         led.setHexPattern(sm.getPattern(), false);
         led.clearUndo();
     }
