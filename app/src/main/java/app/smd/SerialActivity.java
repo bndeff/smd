@@ -173,7 +173,7 @@ public class SerialActivity extends AppCompatActivity {
             usbPort = driver.getPorts().get(0);
             try {
                 usbPort.open(usbConnection);
-                usbPort.setParameters(9600, UsbSerialPort.DATABITS_8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
+                usbPort.setParameters(57600, UsbSerialPort.DATABITS_8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
             } catch (IOException e) {
                 setDeviceStatus(ST_CONNECTION_FAILED);
                 return;
