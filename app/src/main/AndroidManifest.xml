@@ -10,6 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StateMachineDesigner">
         <activity
+            android:name=".SerialActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
+        <activity
             android:name=".DataActivity"
             android:exported="true" />
         <activity
@@ -24,7 +34,8 @@
         <activity
             android:name=".StateListActivity"
             android:exported="true" />
-        <activity android:name=".ProjectListActivity">
+        <activity android:name=".ProjectListActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

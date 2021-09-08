@@ -91,6 +91,10 @@ public class ProjectListActivity extends AppCompatActivity {
             intent.putExtra("mode", 1);
             this.startActivity(intent);
         }
+        else if(id == R.id.miUploadProject) {
+            Intent intent = new Intent(this, SerialActivity.class);
+            this.startActivity(intent);
+        }
         else if(id == R.id.miDeleteProject) {
             pl.deleteProject();
             applyChanges();
