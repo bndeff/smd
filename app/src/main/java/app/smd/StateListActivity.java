@@ -1,18 +1,17 @@
 package app.smd;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Locale;
 
@@ -31,10 +30,12 @@ public class StateListActivity extends AppCompatActivity {
         pl = new PersistedProjectList(this);
         sm = pl.getMachine();
 
-        int tileWidth = (int) Math.ceil(getResources().getDimension(R.dimen.thumbnail_size) +
-                2 * getResources().getDimension(R.dimen.thumbnail_padding));
         rv = (RecyclerView) findViewById(R.id.listStates);
-        RecyclerView.LayoutManager lm = new TiledLayoutManager(this, tileWidth);
+        int spans = 4;
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            spans = 7;
+        }
+        RecyclerView.LayoutManager lm = new GridLayoutManager(this, spans);
         rv.setLayoutManager(lm);
 
         sla = new StateListAdapter(sm);

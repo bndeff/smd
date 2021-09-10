@@ -124,8 +124,8 @@ public class StateMachine {
     private static final int[] timerMultipliers = {1, 2, 4, 0};
     private static final int[] timerList = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 0};
 
-    private static final String nullPattern = "0000000000000000";
-    private static final String errorPattern = "81bda1bda1a13c81";
+    public static final String nullPattern = "0000000000000000";
+    public static final String errorPattern = "81bda1bda1a13c81";
 
     public static final String magic = "73743031";
 

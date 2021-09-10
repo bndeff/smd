@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/thumbnail_size"
-    android:layout_height="@dimen/thumbnail_size"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="@dimen/thumbnail_padding">
+    android:layout_margin="3dp">
 
     <Button
         android:id="@+id/btnTransfer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/thumbnail_padding"
-        android:layout_marginEnd="@dimen/thumbnail_padding"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:text="" />
 
     <app.smd.LedGridView
         android:id="@+id/ledTransfer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/thumbnail_padding"
+        android:layout_margin="4dp"
         android:elevation="5dp"
         android:background="#80000000"
         android:visibility="invisible"

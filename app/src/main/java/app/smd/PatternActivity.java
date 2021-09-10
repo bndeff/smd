@@ -1,17 +1,14 @@
 package app.smd;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.Locale;
 
@@ -32,9 +29,7 @@ public class PatternActivity extends AppCompatActivity {
         sm = pl.getMachine();
         led = (LedGridView) findViewById(R.id.ledPattern);
         loadFrame();
-        led.setOnChangeListener(() -> {
-            sm.setPattern(led.getHexPattern());
-        });
+        led.setOnChangeListener(() -> sm.setPattern(led.getHexPattern()));
 
         tb = findViewById(R.id.tbControls);
         tb.setStateMachine(sm);

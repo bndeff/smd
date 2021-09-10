@@ -24,21 +24,19 @@ import static android.view.MotionEvent.ACTION_UP;
 
 public class LedGridView extends View {
     private Paint drawPaint;
-    private final int w, h;
-    private final byte[] gridData;
-    private int offColor, onColor;
-    private float margin;
-    private boolean editable;
-    private final HashMap<Integer, Boolean> pointerMode;
-    private final Deque<byte[]> undoBuffer, redoBuffer;
-    private final int undoCap;
-    private OnChangeListener onChangeListener;
+    private final int w = 8, h = 8;  // be careful: functions using gridData assume w = h = 8
+    private final byte[] gridData = new byte[8];
+    private int offColor = Color.GRAY, onColor = Color.RED;
+    private float margin = 0;
+    private boolean editable = true;
+    private final HashMap<Integer, Boolean> pointerMode = new HashMap<>();
+    private final Deque<byte[]> undoBuffer = new ArrayDeque<>(), redoBuffer = new ArrayDeque<>();
+    private final int undoCap = 256;
+    private OnChangeListener onChangeListener = null;
 
     public LedGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setupPaint();
-        w = h = 8;  // be careful: functions using gridData assume w = h = 8
-        gridData = new byte[8];
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LedGridView);
         try {
             offColor = a.getColor(R.styleable.LedGridView_offColor, Color.GRAY);
@@ -49,12 +47,13 @@ public class LedGridView extends View {
         } finally {
             a.recycle();
         }
-        pointerMode = new HashMap<>();
-        undoBuffer = new ArrayDeque<>();
-        redoBuffer = new ArrayDeque<>();
-        undoCap = 256;
         clearUndo();
-        onChangeListener = null;
+    }
+
+    public LedGridView(Context context) {
+        super(context);
+        setupPaint();
+        clearUndo();
     }
 
     private void setupPaint() {

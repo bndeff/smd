@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/thumbnail_padding">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <app.smd.LedGridView
         android:id="@+id/ledPreview"
-        android:layout_width="@dimen/thumbnail_size"
-        android:layout_height="@dimen/thumbnail_size"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/thumbnail_padding"
         android:background="#000000"
-        app:offColor="#404040"
-        app:onColor="#ff4040"
+        app:editable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:margin="2dp"
-        app:editable="false" />
+        app:offColor="#404040"
+        app:onColor="#ff4040" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

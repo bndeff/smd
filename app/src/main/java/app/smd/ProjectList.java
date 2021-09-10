@@ -1,14 +1,20 @@
 package app.smd;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectList {
+
+    public static class Preview {
+        int numStates;
+        List<String> patterns;
+        String name;
+    }
 
     private static class Project {
         StateMachine stateMachine;
         String repr;
-        String preview;
-        String name;
+        Preview preview;
     }
 
     private final ArrayList<Project> projects;
@@ -29,9 +35,15 @@ public class ProjectList {
         if(onChangeListener != null) onChangeListener.onChange();
     }
 
-    private String extractPreview(StateMachine sm) {
-        return sm.getThumbnail(0, false) + sm.getThumbnail(1, false) +
-                sm.getThumbnail(2, false) + sm.getName();
+    private Preview extractPreview(StateMachine sm) {
+        Preview p = new Preview();
+        p.numStates = sm.getStateCount();
+        p.patterns = new ArrayList<>();
+        for(int i=0; i<p.numStates; ++i) {
+            p.patterns.add(sm.getThumbnail(i, false));
+        }
+        p.name = sm.getName();
+        return p;
     }
 
     private Project createProject(StateMachine sm) {
@@ -39,11 +51,9 @@ public class ProjectList {
         p.stateMachine = sm;
         p.repr = sm.getRepresentation();
         p.preview = extractPreview(sm);
-        p.name = sm.getName();
         sm.setOnChangeListener(() -> {
             p.repr = p.stateMachine.getRepresentation();
             p.preview = extractPreview(p.stateMachine);
-            p.name = p.stateMachine.getName();
             fireOnChange();
         });
         return p;
@@ -68,7 +78,7 @@ public class ProjectList {
         return projects.get(selIndex).stateMachine;
     }
 
-    public String getPreview(int index) {
+    public Preview getPreview(int index) {
         if(index < 0 || index >= projects.size()) return null;
         return projects.get(index).preview;
     }

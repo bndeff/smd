@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransferButtons extends TableLayout {
+public class TransferButtons extends LinearLayout {
 
     private final List<Button> btnTransfer = new ArrayList<>();
     private final List<LedGridView> ledTransfer = new ArrayList<>();
@@ -49,10 +50,12 @@ public class TransferButtons extends TableLayout {
 
     public TransferButtons(Context context, AttributeSet attrs) {
         super(context, attrs);
+        super.setOrientation(VERTICAL);
         LayoutInflater inflater = LayoutInflater.from(context);
         for(int j=0; j<3; ++j) {
-            TableRow tr = new TableRow(context);
-            tr.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            LinearLayout tr = new LinearLayout(context);
+            tr.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
+            tr.setOrientation(HORIZONTAL);
             for(int i=0; i<3; ++i) {
                 inflater.inflate(R.layout.item_control, tr, true);
                 FrameLayout fl = (FrameLayout) tr.getChildAt(i);
