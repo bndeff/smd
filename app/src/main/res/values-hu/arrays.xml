@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="demo_project_titles">
+        <item>Pixelek és képkockák</item>
+        <item>Forgó rúd</item>
+        <item>Gördülő szöeg</item>
+        <item>Arc három képkockában</item>
+        <item>Gomb-visszajelzés</item>
+        <item>Gomb-visszajelzés, villogással</item>
+        <item>Keresztellenőrzés</item>
+        <item>Seprés</item>
+        <item>Séta a rácson</item>
+        <item>Kívül-belül</item>
+        <item>Lyukak a talajban</item>
+        <item>Kő-papír-olló</item>
+        <item>Dobókocka</item>
+        <item>Kit is válasszak?</item>
+        <item>Szomszéd-rejtvény</item>
+        <item>Kövesd az utat</item>
+        <item>Konami-kód</item>
+        <item>Kijelző teszt</item>
+    </string-array>
+
+</resources>

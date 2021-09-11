@@ -1,5 +1,7 @@
 package app.smd;
 
+import static java.lang.Math.min;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -8,9 +10,11 @@ public class PersistedProjectList {
 
     private final SharedPreferences sp;
     private final ProjectList pl;
+    private final Context savedContext;
     private OnChangeListener onChangeListener;
 
     public PersistedProjectList(Context context, String key) {
+        savedContext = context;
         sp = context.getSharedPreferences(key, Context.MODE_PRIVATE);
         pl = new ProjectList();
         loadState();
@@ -34,11 +38,20 @@ public class PersistedProjectList {
         int selIndex = sp.getInt("selection", 0);
         pl.clear();
         if(fullRepr.isEmpty()) {
-            pl.addProject("default");
+            loadDemoProjects();
         } else {
             pl.importAll(fullRepr);
         }
         pl.selectProject(selIndex);
+    }
+
+    private void loadDemoProjects() {
+        String[] demoProjects = savedContext.getResources().getStringArray(R.array.demo_projects);
+        String[] demoProjectsTitles = savedContext.getResources().getStringArray(R.array.demo_project_titles);
+        int demoCount = min(demoProjects.length, demoProjectsTitles.length);
+        for(int i = 0; i < demoCount; ++i) {
+            pl.importProject(demoProjectsTitles[i], demoProjects[i]);
+        }
     }
 
     public void setOnChangeListener(OnChangeListener listener) {
