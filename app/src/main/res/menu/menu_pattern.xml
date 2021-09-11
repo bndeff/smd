@@ -17,4 +17,24 @@
         android:icon="@drawable/ic_transfers"
         android:title="@string/action_show_transfers"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miCycleSpeed"
+        android:icon="@drawable/ic_speed"
+        android:title="@string/action_cycle_speed"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miAddPatternFrame"
+        android:icon="@drawable/ic_add"
+        android:title="@string/action_add_frame"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miClonePatternFrame"
+        android:icon="@drawable/ic_clone"
+        android:title="@string/action_clone_frame"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miDeletePatternFrame"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/action_delete_frame"
+        app:showAsAction="ifRoom" />
 </menu>

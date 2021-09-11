@@ -74,6 +74,7 @@
             android:contentDescription="@string/alt_text_prev_project"
             android:minHeight="48dp"
             android:src="@drawable/ic_previous"
+            app:tint="?attr/colorControlNormal"
             app:layout_constraintBottom_toBottomOf="@+id/btnUpload"
             app:layout_constraintEnd_toStartOf="@+id/btnUpload"
             app:layout_constraintTop_toTopOf="@+id/btnUpload" />
@@ -97,6 +98,7 @@
             android:contentDescription="@string/alt_text_next_project"
             android:minHeight="48dp"
             android:src="@drawable/ic_next"
+            app:tint="?attr/colorControlNormal"
             app:layout_constraintBottom_toBottomOf="@+id/btnUpload"
             app:layout_constraintStart_toEndOf="@+id/btnUpload"
             app:layout_constraintTop_toTopOf="@+id/btnUpload" />

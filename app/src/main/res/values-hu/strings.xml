@@ -27,7 +27,7 @@
     <string name="action_shift_right">Eltolás jobbra</string>
     <string name="action_shift_up">Eltolás felfelé</string>
     <string name="action_shift_down">Eltolás lefelé</string>
-    <string name="action_invert">Invertálás</string>
+    <string name="action_invert">Színek invertálása</string>
     <string name="action_clear">Tartalom törlése</string>
     <string name="action_delete_frame">Képkocka törlése</string>
     <string name="label_comm_status">Eszköz állapota</string>
@@ -80,4 +80,14 @@
     <string name="alt_text_op_error">Hiba</string>
     <string name="alt_text_op_unknown">Ismeretlen</string>
     <string name="alt_text_reset">Alapállapot</string>
+    <string name="action_rotate_left">Forgatás balra</string>
+    <string name="action_rotate_right">Forgatás jobbra</string>
+    <string name="action_flip_horizontal">Vízszintes tükrözés</string>
+    <string name="action_flip_vertical">Függőleges tükrözés</string>
+    <string name="action_cycle_speed">Következő sebesség</string>
+    <string name="speed_fast">Sebesség: gyors</string>
+    <string name="speed_normal">Sebesség: normál</string>
+    <string name="speed_slow">Sebesség: lassú</string>
+    <string name="speed_stopped">Sebesség: mozdulatlan</string>
+    <string name="speed_unknown">Sebesség: ismeretlen</string>
 </resources>

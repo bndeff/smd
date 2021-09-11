@@ -26,7 +26,7 @@
     <string name="action_shift_right">Shift right</string>
     <string name="action_shift_up">Shift up</string>
     <string name="action_shift_down">Shift down</string>
-    <string name="action_invert">Invert</string>
+    <string name="action_invert">Invert colors</string>
     <string name="action_clear">Clear</string>
     <string name="action_delete_frame">Delete frame</string>
     <string name="label_comm_status">Device communication status</string>
@@ -79,4 +79,14 @@
     <string name="alt_text_op_error">Error</string>
     <string name="alt_text_op_unknown">Unknown</string>
     <string name="alt_text_reset">Reset</string>
+    <string name="action_rotate_left">Rotate left</string>
+    <string name="action_rotate_right">Rotate right</string>
+    <string name="action_flip_horizontal">Flip horizontally</string>
+    <string name="action_flip_vertical">Flip vertically</string>
+    <string name="action_cycle_speed">Cycle speed</string>
+    <string name="speed_fast">Speed: fast</string>
+    <string name="speed_normal">Speed: normal</string>
+    <string name="speed_slow">Speed: slow</string>
+    <string name="speed_stopped">Speed: standstill</string>
+    <string name="speed_unknown">Speed: unknown</string>
 </resources>

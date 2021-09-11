@@ -33,6 +33,26 @@
         android:title="@string/action_shift_down"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/miRotatePatternLeft"
+        android:icon="@drawable/ic_rotate_left"
+        android:title="@string/action_rotate_left"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miRotatePatternRight"
+        android:icon="@drawable/ic_rotate_right"
+        android:title="@string/action_rotate_right"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miFlipHorizontally"
+        android:icon="@drawable/ic_flip_horizontal"
+        android:title="@string/action_flip_horizontal"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/miFlipVertically"
+        android:icon="@drawable/ic_flip_vertical"
+        android:title="@string/action_flip_vertical"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/miInvertPattern"
         android:icon="@drawable/ic_invert"
         android:title="@string/action_invert"
@@ -42,20 +62,4 @@
         android:icon="@drawable/ic_clear"
         android:title="@string/action_clear"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/miAddPatternFrame"
-        android:icon="@drawable/ic_add"
-        android:title="@string/action_add_frame"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/miClonePatternFrame"
-        android:icon="@drawable/ic_clone"
-        android:title="@string/action_clone_frame"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/miDeletePatternFrame"
-        android:icon="@drawable/ic_delete"
-        android:title="@string/action_delete_frame"
-        app:showAsAction="ifRoom" />
-
 </menu>

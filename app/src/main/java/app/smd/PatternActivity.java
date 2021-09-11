@@ -17,6 +17,9 @@ public class PatternActivity extends AppCompatActivity {
     private LedGridView led;
     private TransferButtons tb;
     private boolean showTransfers = false;
+    private MenuItem speedMenu;
+    private int currentSpeed;
+    private int shownSpeed = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class PatternActivity extends AppCompatActivity {
         tb.setDisplayMode(TransferButtons.FG_RAW, TransferButtons.BG_SHOW);
         tb.refresh();
         updateTitle();
+        updateSpeed();
 
         if(savedInstanceState != null) {
             showTransfers = savedInstanceState.getBoolean("showTransfers", false);
@@ -49,6 +53,7 @@ public class PatternActivity extends AppCompatActivity {
         pl.setOnChangeListener(() -> {
             tb.refresh();
             updateTitle();
+            updateSpeed();
         });
     }
 
@@ -58,12 +63,35 @@ public class PatternActivity extends AppCompatActivity {
         outState.putBoolean("showTransfers", showTransfers);
     }
 
+    private String getSpeedTitle(int speed) {
+        switch (speed) {
+            case 0:
+                return getString(R.string.speed_fast);
+            case 1:
+                return getString(R.string.speed_normal);
+            case 2:
+                return getString(R.string.speed_slow);
+            case 3:
+                return getString(R.string.speed_stopped);
+            default:
+                return getString(R.string.speed_unknown);
+        }
+    }
+
+    private void updateSpeed() {
+        if(speedMenu != null && shownSpeed != currentSpeed) {
+            speedMenu.setTitle(getSpeedTitle(currentSpeed));
+            shownSpeed = currentSpeed;
+        }
+    }
+
     private void loadFrame() {
         if(sm.isErrorState()) {
             sm.gotoState(sm.getStateCount()-1);
         }
         led.setHexPattern(sm.getPattern(), false);
         led.clearUndo();
+        currentSpeed = sm.getSpeed();
     }
 
     @Override
@@ -86,6 +114,8 @@ public class PatternActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_pattern, menu);
+        speedMenu = menu.findItem(R.id.miCycleSpeed);
+        updateSpeed();
 
         Toolbar toolbar = findViewById(R.id.tbPatternActions);
         Menu toolbarMenu = toolbar.getMenu();
@@ -140,6 +170,16 @@ public class PatternActivity extends AppCompatActivity {
             showTransfers = !showTransfers;
             tb.setVisibility(showTransfers ? View.VISIBLE : View.INVISIBLE);
         }
+        else if(id == R.id.miCycleSpeed) {
+            if(currentSpeed == sm.getMaxSpeed()) {
+                currentSpeed = 0;
+            } else {
+                currentSpeed += 1;
+            }
+            sm.setSpeed(currentSpeed);
+            currentSpeed = sm.getSpeed();
+            applyChanges();
+        }
         else if(id == R.id.miShiftPatternLeft) {
             led.shiftLeft();
             applyChanges();
@@ -154,6 +194,22 @@ public class PatternActivity extends AppCompatActivity {
         }
         else if(id == R.id.miShiftPatternDown) {
             led.shiftDown();
+            applyChanges();
+        }
+        else if(id == R.id.miRotatePatternLeft) {
+            led.rotateLeft();
+            applyChanges();
+        }
+        else if(id == R.id.miRotatePatternRight) {
+            led.rotateRight();
+            applyChanges();
+        }
+        else if(id == R.id.miFlipHorizontally) {
+            led.flipHorizontally();
+            applyChanges();
+        }
+        else if(id == R.id.miFlipVertically) {
+            led.flipVertically();
             applyChanges();
         }
         else if(id == R.id.miInvertPattern) {

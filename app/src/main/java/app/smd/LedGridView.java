@@ -255,6 +255,54 @@ public class LedGridView extends View {
         markUpdated(true);
     }
 
+    public void rotateLeft() {
+        if(!editable) return;
+        byte[] prevData = new byte[8];
+        System.arraycopy(gridData, 0, prevData, 0, h);
+        for(int j=0; j<h; ++j) {
+            gridData[j] = 0;
+            for(int i=0; i<w; ++i) {
+                if((prevData[i] & (0x1 << j)) != 0) gridData[j] |= 0x80 >> i;
+            }
+        }
+        markUpdated(true);
+    }
+
+    public void rotateRight() {
+        if(!editable) return;
+        byte[] prevData = new byte[8];
+        System.arraycopy(gridData, 0, prevData, 0, h);
+        for(int j=0; j<h; ++j) {
+            gridData[j] = 0;
+            for(int i=0; i<w; ++i) {
+                if((prevData[h-i-1] & (0x80 >> j)) != 0) gridData[j] |= 0x80 >> i;
+            }
+        }
+        markUpdated(true);
+    }
+
+    public void flipHorizontally() {
+        if(!editable) return;
+        for(int j=0; j<h; ++j) {
+            byte line = 0;
+            for(int i=0; i<w; ++i) {
+                if((gridData[j] & (0x1 << i)) != 0) line |= 0x80 >> i;
+            }
+            gridData[j] = line;
+        }
+        markUpdated(true);
+    }
+
+    public void flipVertically() {
+        if(!editable) return;
+        for(int j=h/2; j>=0; --j) {
+            byte swap = gridData[j];
+            gridData[j] = gridData[h-j-1];
+            gridData[h-j-1] = swap;
+        }
+        markUpdated(true);
+    }
+
     public void invert() {
         if(!editable) return;
         for(int j=0; j<h; ++j) gridData[j] ^= 0xff;
