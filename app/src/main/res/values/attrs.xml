@@ -6,5 +6,6 @@
         <attr name="offColor" format="color" />
         <attr name="onColor" format="color" />
         <attr name="margin" format="dimension" />
+        <attr name="undoCap" format="integer" />
     </declare-styleable>
 </resources>

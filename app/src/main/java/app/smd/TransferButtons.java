@@ -4,19 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class TransferButtons extends LinearLayout {
 
     private final List<Button> btnTransfer = new ArrayList<>();
@@ -94,6 +92,18 @@ public class TransferButtons extends LinearLayout {
         }
     }
 
+    private String getTxAltText(int tx) {
+        switch (tx) {
+            case StateMachine.TX_UP: return "Up";
+            case StateMachine.TX_AUTO: return "Auto";
+            case StateMachine.TX_LEFT: return "Left";
+            case StateMachine.TX_CLICK: return "Click";
+            case StateMachine.TX_RIGHT: return "Right";
+            case StateMachine.TX_DOWN: return "Down";
+            default: return "Unknown";
+        }
+    }
+
     private int getOpIcon(int op) {
         switch (op) {
             case StateMachine.OP_INHERIT: return R.drawable.ic_default;
@@ -105,6 +115,20 @@ public class TransferButtons extends LinearLayout {
             case StateMachine.OP_NONE: return R.drawable.ic_none;
             case StateMachine.OP_ERROR: return R.drawable.ic_error;
             default: return R.drawable.ic_debug;
+        }
+    }
+
+    private String getOpAltText(int op) {
+        switch (op) {
+            case StateMachine.OP_INHERIT: return "Default";
+            case StateMachine.OP_NEXT: return "Next";
+            case StateMachine.OP_PREV: return "Previous";
+            case StateMachine.OP_PAUSE: return "Pause";
+            case StateMachine.OP_FASTER: return "Faster";
+            case StateMachine.OP_SLOWER: return "Slower";
+            case StateMachine.OP_NONE: return "None";
+            case StateMachine.OP_ERROR: return "Error";
+            default: return "Unknown";
         }
     }
 
@@ -168,11 +192,13 @@ public class TransferButtons extends LinearLayout {
                 txt.setVisibility(INVISIBLE);
                 img.setVisibility(VISIBLE);
                 img.setImageResource(getTxIcon(bv));
+                img.setContentDescription(getTxAltText(bv));
             }
             else if(fgMode == FG_TX && bt == BT_RESET) {
                 txt.setVisibility(INVISIBLE);
                 img.setVisibility(VISIBLE);
                 img.setImageResource(R.drawable.ic_reset);
+                img.setContentDescription("Reset");
             }
             else {
                 if(fgMode == FG_STATE && !opRem) opDisplay = state;
@@ -180,6 +206,7 @@ public class TransferButtons extends LinearLayout {
                     txt.setVisibility(INVISIBLE);
                     img.setVisibility(VISIBLE);
                     img.setImageResource(getOpIcon(opDisplay));
+                    img.setContentDescription(getOpAltText(opDisplay));
                 } else {
                     txt.setVisibility(VISIBLE);
                     img.setVisibility(INVISIBLE);

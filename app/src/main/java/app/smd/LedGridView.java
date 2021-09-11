@@ -22,6 +22,7 @@ import static android.view.MotionEvent.ACTION_POINTER_DOWN;
 import static android.view.MotionEvent.ACTION_POINTER_UP;
 import static android.view.MotionEvent.ACTION_UP;
 
+@SuppressWarnings("unused")
 public class LedGridView extends View {
     private Paint drawPaint;
     private final int w = 8, h = 8;  // be careful: functions using gridData assume w = h = 8
@@ -31,7 +32,7 @@ public class LedGridView extends View {
     private boolean editable = true;
     private final HashMap<Integer, Boolean> pointerMode = new HashMap<>();
     private final Deque<byte[]> undoBuffer = new ArrayDeque<>(), redoBuffer = new ArrayDeque<>();
-    private final int undoCap = 256;
+    private int undoCap = 256;
     private OnChangeListener onChangeListener = null;
 
     public LedGridView(Context context, AttributeSet attrs) {
@@ -39,10 +40,11 @@ public class LedGridView extends View {
         setupPaint();
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LedGridView);
         try {
-            offColor = a.getColor(R.styleable.LedGridView_offColor, Color.GRAY);
-            onColor = a.getColor(R.styleable.LedGridView_onColor, Color.RED);
-            margin = a.getDimension(R.styleable.LedGridView_margin, 0);
-            editable = a.getBoolean(R.styleable.LedGridView_editable, true);
+            offColor = a.getColor(R.styleable.LedGridView_offColor, offColor);
+            onColor = a.getColor(R.styleable.LedGridView_onColor, onColor);
+            margin = a.getDimension(R.styleable.LedGridView_margin, margin);
+            editable = a.getBoolean(R.styleable.LedGridView_editable, editable);
+            undoCap = a.getInt(R.styleable.LedGridView_undoCap, undoCap);
             setHexPatternInternal(a.getString(R.styleable.LedGridView_pattern));
         } finally {
             a.recycle();
@@ -219,6 +221,7 @@ public class LedGridView extends View {
         restoreUndoFrame();
     }
 
+    @SuppressWarnings("SuspiciousSystemArraycopy")
     public void shiftUp() {
         if(!editable) return;
         System.arraycopy(gridData, 1, gridData, 0, h - 1);
@@ -226,6 +229,7 @@ public class LedGridView extends View {
         markUpdated(true);
     }
 
+    @SuppressWarnings("SuspiciousSystemArraycopy")
     public void shiftDown() {
         if(!editable) return;
         System.arraycopy(gridData, 0, gridData, 1, h - 1);

@@ -44,9 +44,7 @@ public class ProjectSettingsActivity extends AppCompatActivity {
 
         this.setTitle(sm.getName());
 
-        pl.setOnChangeListener(() -> {
-            tb.refresh();
-        });
+        pl.setOnChangeListener(() -> tb.refresh());
     }
 
     @Override

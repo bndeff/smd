@@ -3,13 +3,7 @@ package app.smd;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.text.LineBreaker;
-import android.os.Build;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

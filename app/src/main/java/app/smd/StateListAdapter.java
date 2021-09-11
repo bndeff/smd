@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +17,7 @@ public class StateListAdapter extends RecyclerView.Adapter<StateListAdapter.View
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ledPreview = (LedGridView) itemView.findViewById(R.id.ledPreview);
+            ledPreview = itemView.findViewById(R.id.ledPreview);
         }
 
         @SuppressLint("ResourceAsColor")
@@ -45,8 +44,10 @@ public class StateListAdapter extends RecyclerView.Adapter<StateListAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bindFrame(sm.getThumbnail(position, true), sm.getCurrentState() == position);
         holder.itemView.setOnClickListener(v -> {
+            int oldIndex = sm.getCurrentState();
             sm.gotoState(position);
-            notifyDataSetChanged();
+            if(oldIndex >= 0) notifyItemChanged(oldIndex);
+            if(!sm.isErrorState()) notifyItemChanged(sm.getCurrentState());
         });
     }
 

@@ -2,6 +2,7 @@ package app.smd;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,8 +11,8 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,22 +27,6 @@ import java.util.Locale;
 
 public class SerialActivity extends AppCompatActivity {
 
-    private PersistedProjectList pl = null;
-    private Button btnRefresh;
-    private Button btnUpload;
-    private Button btnDownload;
-    private ImageButton btnPrev;
-    private ImageButton btnNext;
-    private TextView txtCommStatus;
-    private TextView txtUploadProject;
-    private TextView txtDownloadProject;
-    private UsbManager usbManager;
-    private UsbDeviceConnection usbConnection;
-    private UsbSerialPort usbPort;
-    private BroadcastReceiver broadcastReceiver;
-    private int deviceStatus = 0;
-    private boolean askPermission = true;
-
     private static final String INTENT_ACTION_GRANT_USB = BuildConfig.APPLICATION_ID + ".GRANT_USB";
 
     public static final int ST_UNKNOWN = 0;
@@ -55,19 +40,33 @@ public class SerialActivity extends AppCompatActivity {
     public static final int ST_RECEIVING = 8;
     public static final int ST_HANDSHAKE_FAILED = 9;
 
+    private PersistedProjectList pl = null;
+    private Button btnRefresh;
+    private Button btnUpload;
+    private Button btnDownload;
+    private TextView txtCommStatus;
+    private TextView txtUploadProject;
+    private TextView txtDownloadProject;
+    private UsbManager usbManager;
+    private UsbDeviceConnection usbConnection;
+    private UsbSerialPort usbPort;
+    private BroadcastReceiver broadcastReceiver;
+    private int deviceStatus = ST_UNKNOWN;
+    private boolean askPermission = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serial);
         pl = new PersistedProjectList(this);
-        btnRefresh = (Button) findViewById(R.id.btnRefresh);
-        btnUpload = (Button) findViewById(R.id.btnUpload);
-        btnDownload = (Button) findViewById(R.id.btnDownload);
-        btnPrev = (ImageButton) findViewById(R.id.btnPrev);
-        btnNext = (ImageButton) findViewById(R.id.btnNext);
-        txtCommStatus = (TextView) findViewById(R.id.txtCommStatus);
-        txtUploadProject = (TextView) findViewById(R.id.txtUploadProject);
-        txtDownloadProject = (TextView) findViewById(R.id.txtDownloadProject);
+        btnRefresh = findViewById(R.id.btnRefresh);
+        btnUpload = findViewById(R.id.btnUpload);
+        btnDownload = findViewById(R.id.btnDownload);
+        ImageButton btnPrev = findViewById(R.id.btnPrev);
+        ImageButton btnNext = findViewById(R.id.btnNext);
+        txtCommStatus = findViewById(R.id.txtCommStatus);
+        txtUploadProject = findViewById(R.id.txtUploadProject);
+        txtDownloadProject = findViewById(R.id.txtDownloadProject);
         btnRefresh.setOnClickListener(v -> refreshDevice());
         btnUpload.setOnClickListener(v -> uploadProject());
         btnDownload.setOnClickListener(v -> downloadProject());
@@ -159,8 +158,13 @@ public class SerialActivity extends AppCompatActivity {
                     if (askPermission) {
                         setDeviceStatus(ST_PENDING_PERMISSION);
                         registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
+                        int flags = 0;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            flags = PendingIntent.FLAG_IMMUTABLE;
+                        }
+                        @SuppressLint("UnspecifiedImmutableFlag")
                         PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(this,
-                                0, new Intent(INTENT_ACTION_GRANT_USB), 0);
+                                0, new Intent(INTENT_ACTION_GRANT_USB), flags);
                         usbManager.requestPermission(device, usbPermissionIntent);
                     } else {
                         setDeviceStatus(ST_NO_PERMISSION);
@@ -186,6 +190,7 @@ public class SerialActivity extends AppCompatActivity {
         }).start();
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private String serialRequest(String request, int maxLen) {
         try {
             byte[] buffer = new byte[maxLen];

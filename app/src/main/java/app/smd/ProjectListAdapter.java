@@ -1,10 +1,7 @@
 package app.smd;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +34,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                 numPreviews = 3;
             }
             createLedPreviews();
-            tvProjectName = (TextView) itemView.findViewById(R.id.tvProjectName);
+            tvProjectName = itemView.findViewById(R.id.tvProjectName);
         }
 
         private void createLedPreviews() {
@@ -115,8 +112,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bindStateMachine(pl.getPreview(position), pl.getSelIndex() == position);
         holder.itemView.setOnClickListener(v -> {
+            int oldIndex = pl.getSelIndex();
             pl.selectProject(position);
-            notifyDataSetChanged();
+            notifyItemChanged(oldIndex);
+            notifyItemChanged(pl.getSelIndex());
         });
     }
 

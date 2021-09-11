@@ -1,17 +1,16 @@
 package app.smd;
 
-import android.graphics.Path;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
+@SuppressWarnings("unused")
 public class StateMachine {
 
     private static class State {
         String pattern;
-        int[] transfer;
+        final int[] transfer;
         int speed;
 
         State() {

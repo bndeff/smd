@@ -1,7 +1,6 @@
 package app.smd;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,7 +27,7 @@ public class PatternActivity extends AppCompatActivity {
 
         pl = new PersistedProjectList(this);
         sm = pl.getMachine();
-        led = (LedGridView) findViewById(R.id.ledPattern);
+        led = findViewById(R.id.ledPattern);
         loadFrame();
         led.setOnChangeListener(() -> sm.setPattern(led.getHexPattern()));
 
@@ -90,7 +89,7 @@ public class PatternActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_pattern, menu);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tbPatternActions);
+        Toolbar toolbar = findViewById(R.id.tbPatternActions);
         Menu toolbarMenu = toolbar.getMenu();
         inflater.inflate(R.menu.toolbar_pattern, toolbarMenu);
         int menuSize = toolbarMenu.size();

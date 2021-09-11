@@ -3,6 +3,7 @@ package app.smd;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+@SuppressWarnings("unused")
 public class PersistedProjectList {
 
     private final SharedPreferences sp;

@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
+        android:elevation="5dp"
         android:background="#80000000"
         android:visibility="invisible"
         app:margin="2dp"
@@ -30,6 +31,7 @@
         android:id="@+id/txtTransfer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:elevation="10dp"
         android:gravity="center"
         android:textColor="@color/white"
         android:visibility="invisible"
@@ -40,6 +42,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
+        android:elevation="15dp"
         android:src="@drawable/ic_debug"
         android:contentDescription="Unknown transfer"
         app:tint="@color/white" />

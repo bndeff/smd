@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,11 +27,13 @@ public class ProjectListActivity extends AppCompatActivity {
 
         pl = new PersistedProjectList(this);
 
-        RecyclerView rv = (RecyclerView) findViewById(R.id.listProjects);
+        RecyclerView rv = findViewById(R.id.listProjects);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
         rv.setLayoutManager(lm);
         pla = new ProjectListAdapter(pl.getWrappedProjectList());
         rv.setAdapter(pla);
+        SimpleItemAnimator rva = (SimpleItemAnimator) rv.getItemAnimator();
+        if(rva != null) rva.setSupportsChangeAnimations(false);
     }
 
     @Override
@@ -38,6 +42,7 @@ public class ProjectListActivity extends AppCompatActivity {
         pl.persistState();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onResume() {
         super.onResume();
@@ -50,11 +55,6 @@ public class ProjectListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_project_list, menu);
         return true;
-    }
-
-    private void applyChanges() {
-        pl.persistState();
-        pla.notifyDataSetChanged();
     }
 
     private String genProjectName() {
@@ -74,12 +74,18 @@ public class ProjectListActivity extends AppCompatActivity {
             this.startActivity(intent);
         }
         else if(id == R.id.miNewProject) {
+            int oldIndex = pl.getSelIndex();
             pl.addProject(genProjectName());
-            applyChanges();
+            pl.persistState();
+            pla.notifyItemChanged(oldIndex);
+            pla.notifyItemInserted(pl.getSelIndex());
         }
         else if(id == R.id.miCloneProject) {
+            int oldIndex = pl.getSelIndex();
             pl.cloneProject(genProjectName());
-            applyChanges();
+            pl.persistState();
+            pla.notifyItemChanged(oldIndex);
+            pla.notifyItemInserted(pl.getSelIndex());
         }
         else if(id == R.id.miImportProject) {
             Intent intent = new Intent(this, DataActivity.class);
@@ -96,8 +102,11 @@ public class ProjectListActivity extends AppCompatActivity {
             this.startActivity(intent);
         }
         else if(id == R.id.miDeleteProject) {
+            int oldIndex = pl.getSelIndex();
             pl.deleteProject();
-            applyChanges();
+            pl.persistState();
+            pla.notifyItemRemoved(oldIndex);
+            pla.notifyItemChanged(pl.getSelIndex());
         }
         return true;
     }

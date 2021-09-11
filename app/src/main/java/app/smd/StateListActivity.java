@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import java.util.Locale;
 
@@ -30,7 +31,7 @@ public class StateListActivity extends AppCompatActivity {
         pl = new PersistedProjectList(this);
         sm = pl.getMachine();
 
-        rv = (RecyclerView) findViewById(R.id.listStates);
+        rv = findViewById(R.id.listStates);
         int spans = 4;
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             spans = 7;
@@ -40,6 +41,8 @@ public class StateListActivity extends AppCompatActivity {
 
         sla = new StateListAdapter(sm);
         rv.setAdapter(sla);
+        SimpleItemAnimator rva = (SimpleItemAnimator) rv.getItemAnimator();
+        if(rva != null) rva.setSupportsChangeAnimations(false);
 
         pl.setOnChangeListener(this::updateFrame);
         updateFrame();
@@ -66,7 +69,7 @@ public class StateListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_state_list, menu);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tbFrameActions);
+        Toolbar toolbar = findViewById(R.id.tbFrameActions);
         Menu toolbarMenu = toolbar.getMenu();
         inflater.inflate(R.menu.toolbar_state_list, toolbarMenu);
         int menuSize = toolbarMenu.size();
@@ -74,11 +77,6 @@ public class StateListActivity extends AppCompatActivity {
             toolbarMenu.getItem(i).setOnMenuItemClickListener(this::onOptionsItemSelected);
         }
         return true;
-    }
-
-    private void applyChanges() {
-        pl.persistState();
-        sla.notifyDataSetChanged();
     }
 
     private void updateFrame() {
@@ -116,36 +114,65 @@ public class StateListActivity extends AppCompatActivity {
             this.startActivity(intent);
         }
         else if(id == R.id.miAddFrame) {
+            int oldIndex = sm.getCurrentState();
             sm.addState();
-            applyChanges();
+            pl.persistState();
+            if(!sm.isErrorState()) sla.notifyItemInserted(sm.getCurrentState());
+            if(oldIndex >= 0) sla.notifyItemChanged(oldIndex);
         }
         else if(id == R.id.miCloneFrame) {
+            int oldIndex = sm.getCurrentState();
             sm.cloneState();
-            applyChanges();
+            pl.persistState();
+            if(!sm.isErrorState()) sla.notifyItemInserted(sm.getCurrentState());
+            if(oldIndex >= 0) sla.notifyItemChanged(oldIndex);
         }
         else if(id == R.id.miMoveFrameForward) {
+            int oldIndex = sm.getCurrentState();
             sm.moveStateUp();
-            applyChanges();
+            pl.persistState();
+            if(oldIndex >= 0 && !sm.isErrorState()) {
+                sla.notifyItemMoved(oldIndex, sm.getCurrentState());
+            }
         }
         else if(id == R.id.miMoveFrameBackward) {
+            int oldIndex = sm.getCurrentState();
             sm.moveStateDown();
-            applyChanges();
+            pl.persistState();
+            if(oldIndex >= 0 && !sm.isErrorState()) {
+                sla.notifyItemMoved(oldIndex, sm.getCurrentState());
+            }
         }
         else if(id == R.id.miCutFrame) {
+            int oldIndex = sm.getCurrentState();
             sm.cutState();
-            applyChanges();
+            pl.persistState();
+            if(oldIndex >= 0) {
+                sla.notifyItemRemoved(oldIndex);
+                if(!sm.isErrorState()) sla.notifyItemChanged(sm.getCurrentState());
+            }
         }
         else if(id == R.id.miCopyFrame) {
             sm.copyState();
-            applyChanges();
+            pl.persistState();
         }
         else if(id == R.id.miPasteFrame) {
+            int oldIndex = sm.getCurrentState();
             sm.pasteState();
-            applyChanges();
+            pl.persistState();
+            if(!sm.isErrorState()) {
+                if(oldIndex >= 0) sla.notifyItemChanged(oldIndex);
+                sla.notifyItemInserted(sm.getCurrentState());
+            }
         }
         else if(id == R.id.miDeleteFrame) {
+            int oldIndex = sm.getCurrentState();
             sm.removeState();
-            applyChanges();
+            pl.persistState();
+            if(oldIndex >= 0) {
+                sla.notifyItemRemoved(oldIndex);
+                if(!sm.isErrorState()) sla.notifyItemChanged(sm.getCurrentState());
+            }
         }
         return true;
     }
