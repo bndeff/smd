@@ -5,16 +5,16 @@
     <item
         android:id="@+id/miPlayFrame"
         android:icon="@drawable/ic_play"
-        android:title="Play"
+        android:title="@string/action_play"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miDebugFrame"
         android:icon="@drawable/ic_debug"
-        android:title="Debug"
+        android:title="@string/action_debug"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miProjectSettings"
         android:icon="@drawable/ic_settings"
-        android:title="Settings"
+        android:title="@string/action_settings"
         app:showAsAction="ifRoom" />
 </menu>

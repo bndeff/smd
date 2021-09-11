@@ -9,8 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.util.Locale;
-
 public class SimulationActivity extends AppCompatActivity {
 
     private StateMachine sm;
@@ -135,9 +133,9 @@ public class SimulationActivity extends AppCompatActivity {
         tbControls.refresh();
         if(debugMode) {
             if(sm.isErrorState()) {
-                this.setTitle("Error state");
+                this.setTitle(getString(R.string.frame_number_error));
             } else {
-                this.setTitle(String.format(Locale.US, "Frame #%d", sm.getCurrentState() + 1));
+                this.setTitle(String.format(getString(R.string.frame_number_template), sm.getCurrentState() + 1));
             }
         }
         if(pauseMenu != null) {
@@ -145,10 +143,10 @@ public class SimulationActivity extends AppCompatActivity {
                 isPaused = !isPaused;
                 if(isPaused) {
                     pauseMenu.setIcon(R.drawable.ic_play);
-                    pauseMenu.setTitle("Continue");
+                    pauseMenu.setTitle(R.string.action_continue);
                 } else {
                     pauseMenu.setIcon(R.drawable.ic_pause);
-                    pauseMenu.setTitle("Pause");
+                    pauseMenu.setTitle(R.string.action_pause);
                 }
             }
         }

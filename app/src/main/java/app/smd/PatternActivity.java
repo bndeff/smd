@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.Locale;
-
 public class PatternActivity extends AppCompatActivity {
 
     private PersistedProjectList pl;
@@ -105,7 +103,7 @@ public class PatternActivity extends AppCompatActivity {
 
     private void updateTitle() {
         this.setTitle(sm.getName());
-        String frameTitle = String.format(Locale.US, "Frame #%d", sm.getCurrentState() + 1);
+        String frameTitle = String.format(getString(R.string.frame_number_template), sm.getCurrentState() + 1);
         ((Toolbar) findViewById(R.id.tbPatternActions)).setTitle(frameTitle);
     }
 

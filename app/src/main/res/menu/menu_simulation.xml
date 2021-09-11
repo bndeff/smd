@@ -5,21 +5,21 @@
     <item
         android:id="@+id/miViewSim"
         android:icon="@drawable/ic_view"
-        android:title="Cycle view mode"
+        android:title="@string/action_cycle_view_mode"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miPauseSim"
         android:icon="@drawable/ic_pause"
-        android:title="Pause"
+        android:title="@string/action_pause"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miFasterSim"
         android:icon="@drawable/ic_faster"
-        android:title="Faster"
+        android:title="@string/action_faster"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miSlowerSim"
         android:icon="@drawable/ic_slower"
-        android:title="Slower"
+        android:title="@string/action_slower"
         app:showAsAction="ifRoom" />
 </menu>

@@ -5,11 +5,11 @@
     <item
         android:id="@+id/miPreviousProject"
         android:icon="@drawable/ic_previous"
-        android:title="Previous project"
+        android:title="@string/action_prev_project"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miNextProject"
         android:icon="@drawable/ic_next"
-        android:title="Next project"
+        android:title="@string/action_next_project"
         app:showAsAction="ifRoom" />
 </menu>

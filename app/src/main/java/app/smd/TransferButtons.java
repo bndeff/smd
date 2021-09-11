@@ -94,13 +94,13 @@ public class TransferButtons extends LinearLayout {
 
     private String getTxAltText(int tx) {
         switch (tx) {
-            case StateMachine.TX_UP: return "Up";
-            case StateMachine.TX_AUTO: return "Auto";
-            case StateMachine.TX_LEFT: return "Left";
-            case StateMachine.TX_CLICK: return "Click";
-            case StateMachine.TX_RIGHT: return "Right";
-            case StateMachine.TX_DOWN: return "Down";
-            default: return "Unknown";
+            case StateMachine.TX_UP: return getContext().getString(R.string.alt_text_tx_up);
+            case StateMachine.TX_AUTO: return getContext().getString(R.string.alt_text_tx_auto);
+            case StateMachine.TX_LEFT: return getContext().getString(R.string.alt_text_tx_left);
+            case StateMachine.TX_CLICK: return getContext().getString(R.string.alt_text_tx_click);
+            case StateMachine.TX_RIGHT: return getContext().getString(R.string.alt_text_tx_right);
+            case StateMachine.TX_DOWN: return getContext().getString(R.string.alt_text_tx_down);
+            default: return getContext().getString(R.string.alt_text_tx_unknown);
         }
     }
 
@@ -120,15 +120,15 @@ public class TransferButtons extends LinearLayout {
 
     private String getOpAltText(int op) {
         switch (op) {
-            case StateMachine.OP_INHERIT: return "Default";
-            case StateMachine.OP_NEXT: return "Next";
-            case StateMachine.OP_PREV: return "Previous";
-            case StateMachine.OP_PAUSE: return "Pause";
-            case StateMachine.OP_FASTER: return "Faster";
-            case StateMachine.OP_SLOWER: return "Slower";
-            case StateMachine.OP_NONE: return "None";
-            case StateMachine.OP_ERROR: return "Error";
-            default: return "Unknown";
+            case StateMachine.OP_INHERIT: return getContext().getString(R.string.alt_text_op_inherit);
+            case StateMachine.OP_NEXT: return getContext().getString(R.string.alt_text_op_next);
+            case StateMachine.OP_PREV: return getContext().getString(R.string.alt_text_op_previous);
+            case StateMachine.OP_PAUSE: return getContext().getString(R.string.alt_text_op_pause);
+            case StateMachine.OP_FASTER: return getContext().getString(R.string.alt_text_op_faster);
+            case StateMachine.OP_SLOWER: return getContext().getString(R.string.alt_text_op_slower);
+            case StateMachine.OP_NONE: return getContext().getString(R.string.alt_text_op_none);
+            case StateMachine.OP_ERROR: return getContext().getString(R.string.alt_text_op_error);
+            default: return getContext().getString(R.string.alt_text_op_unknown);
         }
     }
 
@@ -198,7 +198,7 @@ public class TransferButtons extends LinearLayout {
                 txt.setVisibility(INVISIBLE);
                 img.setVisibility(VISIBLE);
                 img.setImageResource(R.drawable.ic_reset);
-                img.setContentDescription("Reset");
+                img.setContentDescription(getContext().getString(R.string.alt_text_reset));
             }
             else {
                 if(fgMode == FG_STATE && !opRem) opDisplay = state;

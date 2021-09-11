@@ -41,7 +41,7 @@
         android:layout_height="24dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_debug"
-        android:contentDescription="Unknown transfer"
+        android:contentDescription="@string/unknown_transfer_placeholder"
         app:tint="@color/white" />
 
 </FrameLayout>

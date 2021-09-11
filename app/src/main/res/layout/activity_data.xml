@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Raw data for import/export"
+        android:hint="@string/raw_data_hint"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

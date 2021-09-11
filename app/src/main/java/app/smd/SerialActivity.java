@@ -23,7 +23,6 @@ import com.hoho.android.usbserial.driver.UsbSerialProber;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 public class SerialActivity extends AppCompatActivity {
 
@@ -109,25 +108,25 @@ public class SerialActivity extends AppCompatActivity {
     private String statusString(int status) {
         switch (status) {
             case ST_NO_DEVICE:
-                return "No device found";
+                return getString(R.string.comm_status_no_device);
             case ST_NO_PERMISSION:
-                return "No permission";
+                return getString(R.string.comm_status_no_permission);
             case ST_PENDING_PERMISSION:
-                return "Waiting for permission";
+                return getString(R.string.comm_status_pending_permission);
             case ST_CONNECTING:
-                return "Connecting";
+                return getString(R.string.comm_status_connecting);
             case ST_CONNECTION_FAILED:
-                return "Connection failed";
+                return getString(R.string.comm_status_connection_failed);
             case ST_CONNECTED:
-                return "Connected";
+                return getString(R.string.comm_status_connected);
             case ST_SENDING:
-                return "Sending";
+                return getString(R.string.comm_status_sending);
             case ST_RECEIVING:
-                return "Receiving";
+                return getString(R.string.comm_status_receiving);
             case ST_HANDSHAKE_FAILED:
-                return "Handshake failed";
+                return getString(R.string.comm_status_handshake_failed);
             default:
-                return "Unknown";
+                return getString(R.string.comm_status_unknown);
         }
     }
 
@@ -257,7 +256,7 @@ public class SerialActivity extends AppCompatActivity {
     }
 
     private String genProjectName() {
-        return String.format(Locale.US, "Project #%d", pl.getProjectCount() + 1);
+        return String.format(getString(R.string.project_name_template), pl.getProjectCount() + 1);
     }
 
 }

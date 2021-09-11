@@ -5,46 +5,46 @@
     <item
         android:id="@+id/miEditFrame"
         android:icon="@drawable/ic_edit"
-        android:title="Edit"
+        android:title="@string/action_edit"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miAddFrame"
         android:icon="@drawable/ic_add"
-        android:title="Add"
+        android:title="@string/action_add_frame"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miCloneFrame"
         android:icon="@drawable/ic_clone"
-        android:title="Clone"
+        android:title="@string/action_clone_frame"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miMoveFrameForward"
         android:icon="@drawable/ic_move_left"
-        android:title="Move forward"
+        android:title="@string/action_move_forward"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miMoveFrameBackward"
         android:icon="@drawable/ic_move_right"
-        android:title="Move backward"
+        android:title="@string/action_move_backward"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miCutFrame"
         android:icon="@drawable/ic_cut"
-        android:title="Cut"
+        android:title="@string/action_cut"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miCopyFrame"
         android:icon="@drawable/ic_copy"
-        android:title="Copy"
+        android:title="@string/action_copy"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miPasteFrame"
         android:icon="@drawable/ic_paste"
-        android:title="Paste"
+        android:title="@string/action_paste"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miDeleteFrame"
         android:icon="@drawable/ic_delete"
-        android:title="Delete"
+        android:title="@string/action_delete"
         app:showAsAction="ifRoom" />
 </menu>

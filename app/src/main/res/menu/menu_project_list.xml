@@ -5,36 +5,36 @@
     <item
         android:id="@+id/miPlayProject"
         android:icon="@drawable/ic_play"
-        android:title="Play"
+        android:title="@string/action_play"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miEditProject"
         android:icon="@drawable/ic_edit"
-        android:title="Edit"
+        android:title="@string/action_edit"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miNewProject"
         android:icon="@drawable/ic_new"
-        android:title="New" />
+        android:title="@string/action_new_project" />
     <item
         android:id="@+id/miCloneProject"
         android:icon="@drawable/ic_clone"
-        android:title="Clone" />
+        android:title="@string/action_clone_project" />
     <item
         android:id="@+id/miImportProject"
         android:icon="@drawable/ic_open"
-        android:title="Import" />
+        android:title="@string/action_import" />
     <item
         android:id="@+id/miExportProject"
         android:icon="@drawable/ic_save"
-        android:title="Export" />
+        android:title="@string/action_export" />
     <item
         android:id="@+id/miUploadProject"
         android:icon="@drawable/ic_upload"
-        android:title="Upload" />
+        android:title="@string/action_serial_transfer" />
     <item
         android:id="@+id/miDeleteProject"
         android:icon="@drawable/ic_delete"
-        android:title="Delete" />
+        android:title="@string/action_delete" />
 
 </menu>

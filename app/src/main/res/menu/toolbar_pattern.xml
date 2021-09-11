@@ -5,57 +5,57 @@
     <item
         android:id="@+id/miUndoPattern"
         android:icon="@drawable/ic_undo"
-        android:title="Undo"
+        android:title="@string/action_undo"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miRedoPattern"
         android:icon="@drawable/ic_redo"
-        android:title="Redo"
+        android:title="@string/action_redo"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miShiftPatternLeft"
         android:icon="@drawable/ic_move_left"
-        android:title="Shift left"
+        android:title="@string/action_shift_left"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miShiftPatternRight"
         android:icon="@drawable/ic_move_right"
-        android:title="Shift right"
+        android:title="@string/action_shift_right"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miShiftPatternUp"
         android:icon="@drawable/ic_move_up"
-        android:title="Shift up"
+        android:title="@string/action_shift_up"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miShiftPatternDown"
         android:icon="@drawable/ic_move_down"
-        android:title="Shift down"
+        android:title="@string/action_shift_down"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miInvertPattern"
         android:icon="@drawable/ic_invert"
-        android:title="Invert"
+        android:title="@string/action_invert"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miClearPattern"
         android:icon="@drawable/ic_clear"
-        android:title="Clear"
+        android:title="@string/action_clear"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miAddPatternFrame"
         android:icon="@drawable/ic_add"
-        android:title="Add frame"
+        android:title="@string/action_add_frame"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miClonePatternFrame"
         android:icon="@drawable/ic_clone"
-        android:title="Clone frame"
+        android:title="@string/action_clone_frame"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miDeletePatternFrame"
         android:icon="@drawable/ic_delete"
-        android:title="Delete frame"
+        android:title="@string/action_delete_frame"
         app:showAsAction="ifRoom" />
 
 </menu>

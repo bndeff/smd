@@ -13,8 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.util.Locale;
-
 public class ProjectListActivity extends AppCompatActivity {
 
     private PersistedProjectList pl;
@@ -58,7 +56,7 @@ public class ProjectListActivity extends AppCompatActivity {
     }
 
     private String genProjectName() {
-        return String.format(Locale.US, "Project #%d", pl.getProjectCount() + 1);
+        return String.format(getString(R.string.project_name_template), pl.getProjectCount() + 1);
     }
 
     @Override

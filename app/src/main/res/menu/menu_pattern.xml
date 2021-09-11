@@ -5,16 +5,16 @@
     <item
         android:id="@+id/miPreviousFrame"
         android:icon="@drawable/ic_previous"
-        android:title="Previous frame"
+        android:title="@string/action_prev_frame"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miNextFrame"
         android:icon="@drawable/ic_next"
-        android:title="Next frame"
+        android:title="@string/action_next_frame"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/miTransfers"
         android:icon="@drawable/ic_transfers"
-        android:title="Transfers"
+        android:title="@string/action_show_transfers"
         app:showAsAction="ifRoom" />
 </menu>

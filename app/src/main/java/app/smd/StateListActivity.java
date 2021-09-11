@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-import java.util.Locale;
-
 public class StateListActivity extends AppCompatActivity {
 
     private PersistedProjectList pl;
@@ -88,7 +86,7 @@ public class StateListActivity extends AppCompatActivity {
 
     private void updateTitle() {
         this.setTitle(sm.getName());
-        String frameTitle = String.format(Locale.US, "Frame #%d", sm.getCurrentState() + 1);
+        String frameTitle = String.format(getString(R.string.frame_number_template), sm.getCurrentState() + 1);
         ((Toolbar) findViewById(R.id.tbFrameActions)).setTitle(frameTitle);
     }
 
