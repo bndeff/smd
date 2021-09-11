@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ public class DataActivity extends AppCompatActivity {
 
     private PersistedProjectList pl = null;
     private TextView txtData;
-    private String savedText;
+    private String savedText = null;
     private int mode;
 
     @Override
@@ -48,17 +49,16 @@ public class DataActivity extends AppCompatActivity {
     }
 
     private void refresh() {
-        saveChanges();
+        if(savedText != null) saveChanges();
         if(mode == 1) {
             StateMachine sm = pl.getMachine();
             this.setTitle(sm.getName());
             savedText = sm.getProgram();
-            txtData.setText(savedText);
         } else {
             this.setTitle(genProjectName());
             savedText = "";
-            txtData.setText(savedText);
         }
+        txtData.setText(savedText);
     }
 
     private void saveChanges() {

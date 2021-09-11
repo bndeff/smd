@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.Choreographer;
 import android.view.LayoutInflater;
@@ -52,9 +53,22 @@ public class SimulationActivity extends AppCompatActivity {
         int mode = getIntent().getIntExtra("mode", 0);
         debugMode = mode == 2;
 
-        StateMachine osm = (new PersistedProjectList(this)).getMachine();
-        this.setTitle(osm.getName());
-        sm = new StateMachine(osm, mode != 0);
+        String savedRepr = null;
+        if(savedInstanceState != null) {
+            savedRepr = savedInstanceState.getString("sm");
+            viewMode = savedInstanceState.getInt("viewMode");
+            frameProgress = savedInstanceState.getLong("frameProgress");
+        }
+
+        if(savedRepr != null) {
+            sm = new StateMachine(savedRepr);
+        } else {
+            StateMachine osm = (new PersistedProjectList(this)).getMachine();
+            sm = new StateMachine(osm, mode != 0);
+            sm.setName(osm.getName());
+        }
+        this.setTitle(sm.getName());
+
         initState = sm.getCurrentState();
         tbControls.setStateMachine(sm);
         tbControls.setupButton(1, TransferButtons.BT_TX, StateMachine.TX_UP, v -> processTx(StateMachine.TX_UP));
@@ -68,11 +82,20 @@ public class SimulationActivity extends AppCompatActivity {
             tbControls.setupButton(6, TransferButtons.BT_OP, StateMachine.OP_PREV, v -> sm.processOp(StateMachine.OP_PREV));
             tbControls.setupButton(8, TransferButtons.BT_OP, StateMachine.OP_NEXT, v -> sm.processOp(StateMachine.OP_NEXT));
         }
+        updateViewMode();
         refresh();
 
         sm.setOnChangeListener(this::stateMachineChanged);
         cg = Choreographer.getInstance();
         cg.postFrameCallback(this::frameCallback);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("sm", sm.getRepresentation());
+        outState.putInt("viewMode", viewMode);
+        outState.putLong("frameProgress", frameProgress);
     }
 
     private void frameCallback(long frameTimeNanos) {
@@ -146,6 +169,10 @@ public class SimulationActivity extends AppCompatActivity {
         }
     }
 
+    private void updateViewMode() {
+        tbControls.setDisplayMode(viewMode % 4 + 1, viewMode / 4);
+    }
+
     private void processTx(int tx) {
         sm.processOp(sm.getTransfer(tx));
     }
@@ -156,6 +183,7 @@ public class SimulationActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_simulation, menu);
         pauseMenu = menu.findItem(R.id.miPauseSim);
+        refresh();
         return true;
     }
 
@@ -164,7 +192,7 @@ public class SimulationActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.miViewSim) {
             viewMode = (viewMode + 1) % 8;
-            tbControls.setDisplayMode(viewMode % 4 + 1, viewMode / 4);
+            updateViewMode();
             tbControls.refresh();
         }
         else if(id == R.id.miPauseSim) {

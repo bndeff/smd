@@ -11,6 +11,7 @@
         android:theme="@style/Theme.StateMachineDesigner">
         <activity
             android:name=".SerialActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
@@ -21,6 +22,7 @@
         </activity>
         <activity
             android:name=".DataActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true" />
         <activity
             android:name=".ProjectSettingsActivity"

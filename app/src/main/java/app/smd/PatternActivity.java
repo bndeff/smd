@@ -1,6 +1,7 @@
 package app.smd;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,10 +44,21 @@ public class PatternActivity extends AppCompatActivity {
         tb.refresh();
         updateTitle();
 
+        if(savedInstanceState != null) {
+            showTransfers = savedInstanceState.getBoolean("showTransfers", false);
+        }
+        tb.setVisibility(showTransfers ? View.VISIBLE : View.INVISIBLE);
+
         pl.setOnChangeListener(() -> {
             tb.refresh();
             updateTitle();
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("showTransfers", showTransfers);
     }
 
     private void loadFrame() {
