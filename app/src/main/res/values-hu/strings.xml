@@ -90,4 +90,5 @@
     <string name="speed_slow">Sebesség: lassú</string>
     <string name="speed_stopped">Sebesség: mozdulatlan</string>
     <string name="speed_unknown">Sebesség: ismeretlen</string>
+    <string name="title_pattern">Ábraszerkesztő</string>
 </resources>

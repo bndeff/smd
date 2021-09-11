@@ -89,4 +89,5 @@
     <string name="speed_slow">Speed: slow</string>
     <string name="speed_stopped">Speed: standstill</string>
     <string name="speed_unknown">Speed: unknown</string>
+    <string name="title_pattern">Pattern editor</string>
 </resources>

@@ -79,6 +79,7 @@ public class PatternActivity extends AppCompatActivity {
     }
 
     private void updateSpeed() {
+        if(sm != null) currentSpeed = sm.getSpeed();
         if(speedMenu != null && shownSpeed != currentSpeed) {
             speedMenu.setTitle(getSpeedTitle(currentSpeed));
             shownSpeed = currentSpeed;
@@ -132,9 +133,8 @@ public class PatternActivity extends AppCompatActivity {
     }
 
     private void updateTitle() {
-        this.setTitle(sm.getName());
-        String frameTitle = String.format(getString(R.string.frame_number_template), sm.getCurrentState() + 1);
-        ((Toolbar) findViewById(R.id.tbPatternActions)).setTitle(frameTitle);
+        this.setTitle(String.format(getString(R.string.frame_number_template), sm.getCurrentState() + 1));
+        ((Toolbar) findViewById(R.id.tbPatternActions)).setTitle(R.string.title_pattern);
     }
 
     private void updateTx(int tx) {
