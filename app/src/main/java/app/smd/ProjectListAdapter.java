@@ -110,10 +110,12 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindStateMachine(pl.getPreview(position), pl.getSelIndex() == position);
+        int adapterPosition = holder.getAdapterPosition();
+        holder.bindStateMachine(pl.getPreview(adapterPosition),
+                pl.getSelIndex() == adapterPosition);
         holder.itemView.setOnClickListener(v -> {
             int oldIndex = pl.getSelIndex();
-            pl.selectProject(position);
+            pl.selectProject(holder.getAdapterPosition());
             notifyItemChanged(oldIndex);
             notifyItemChanged(pl.getSelIndex());
         });

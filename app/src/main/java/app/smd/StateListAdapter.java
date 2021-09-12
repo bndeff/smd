@@ -42,10 +42,12 @@ public class StateListAdapter extends RecyclerView.Adapter<StateListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindFrame(sm.getThumbnail(position, true), sm.getCurrentState() == position);
+        int adapterPosition = holder.getAdapterPosition();
+        holder.bindFrame(sm.getThumbnail(adapterPosition, true),
+                sm.getCurrentState() == adapterPosition);
         holder.itemView.setOnClickListener(v -> {
             int oldIndex = sm.getCurrentState();
-            sm.gotoState(position);
+            sm.gotoState(holder.getAdapterPosition());
             if(oldIndex >= 0) notifyItemChanged(oldIndex);
             if(!sm.isErrorState()) notifyItemChanged(sm.getCurrentState());
         });
