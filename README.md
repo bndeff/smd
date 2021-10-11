@@ -6,7 +6,7 @@ State Machine Designer
 + Draw your frames
 + Map button presses to frame transitions
 + Run your program on the included state machine simulator
-+ Upload to an Arduino with a MAX7219 led matrix & mini joystick
++ Upload to an Arduino with a MAX7219 led matrix & mini joystick (use [this firmware](https://github.com/btdigi/btmachine))
 + Explore the built-in samples
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" width="200">](https://play.google.com/store/apps/details?id=app.smd)
