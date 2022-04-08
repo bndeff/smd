@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="app.smd">
 
     <application
@@ -9,7 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StateMachineDesigner"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:fullBackupContent="@xml/backup_descriptor"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        tools:targetApi="s">
         <activity
             android:name=".SerialActivity"
             android:configChanges="orientation|screenSize"
@@ -24,16 +27,16 @@
         <activity
             android:name=".DataActivity"
             android:configChanges="orientation|screenSize"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".ProjectSettingsActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".SimulationActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".PatternActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".StateListActivity"
             android:exported="true" />
